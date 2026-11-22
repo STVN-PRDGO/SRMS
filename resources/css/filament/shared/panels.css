@@ -1,0 +1,64 @@
+.fi-body-has-top-navigation {
+    --topbar-height: 4.25rem;
+}
+
+.fi-body-has-top-navigation .fi-topbar {
+    display: grid;
+    grid-template-columns: minmax(8rem, 1fr) auto minmax(8rem, 1fr);
+    align-items: center;
+    column-gap: 1rem;
+    @apply bg-white px-5 dark:bg-gray-900;
+}
+
+@media (min-width: 1024px) {
+    .fi-body-has-top-navigation .fi-topbar-start {
+        grid-column: 1;
+        justify-self: start;
+        margin-inline-end: 0;
+    }
+
+    .fi-body-has-top-navigation .fi-topbar-nav-groups {
+        grid-column: 2;
+        justify-self: center;
+        margin-inline: 0;
+        flex-wrap: nowrap;
+        gap: 0.125rem;
+    }
+
+    .fi-body-has-top-navigation .fi-topbar-end {
+        grid-column: 3;
+        justify-self: end;
+        margin-inline-start: 0;
+    }
+}
+
+.fi-body-has-top-navigation .fi-topbar-item-btn {
+    border-radius: 999px;
+    padding-inline: 0.85rem;
+}
+
+.fi-body-has-top-navigation .fi-topbar-item.fi-active .fi-topbar-item-btn {
+    @apply bg-primary-50 dark:bg-primary-500/10;
+}
+
+.fi-topbar .fi-logo {
+    @apply font-semibold tracking-tight;
+}
+
+.fi-page-header-heading {
+    letter-spacing: -0.025em;
+}
+
+.fi-wi-stats-overview-stat {
+    border-radius: 1rem;
+}
+
+.srms-banner,
+.eductrack-banner {
+    @apply flex items-center justify-center gap-3 px-4 py-2 text-center text-sm;
+}
+
+.srms-banner a,
+.eductrack-banner a {
+    @apply font-semibold underline underline-offset-2;
+}

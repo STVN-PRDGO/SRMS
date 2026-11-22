@@ -1,0 +1,9 @@
+@import '../../../../vendor/filament/filament/resources/css/theme.css';
+@import '../shared/panels.css';
+
+.fi-sidebar-item.fi-active > .fi-sidebar-item-btn {
+    border-radius: 0.75rem;
+}
+
+@source '../../../../app/Filament/Admin/**/*';
+@source '../../../../resources/views/filament/**/*';

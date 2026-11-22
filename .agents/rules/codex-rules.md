@@ -1,0 +1,5 @@
+prefix_rule(pattern=["C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe", "-Command", "wsl bash -lc 'cd /home/steven/project/hr-lms && pwd && ls -la && printf \"\\nFILES\\n\" && find app -maxdepth 3 -type f 2>/dev/null | sort | head -200'"], decision="allow")
+prefix_rule(pattern=["C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe", "-Command", "wsl bash -lc 'cd /home/steven/project/hr-lms && find database/migrations -maxdepth 1 -type f 2>/dev/null | sort && printf \"\\nPROVIDERS\\n\" && find app/Providers -maxdepth 2 -type f 2>/dev/null | sort'"], decision="allow")
+prefix_rule(pattern=["php", "vendor/bin/pest"], decision="allow")
+prefix_rule(pattern=["php", "vendor/bin/pint"], decision="allow")
+prefix_rule(pattern=["composer", "check"], decision="allow")
