@@ -13,6 +13,8 @@ use OwenIt\Auditing\Models\Audit;
 
 class AuditResource extends Resource
 {
+    protected static bool $isGloballySearchable = false;
+
     protected static ?string $model = Audit::class;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedClipboardDocumentList;

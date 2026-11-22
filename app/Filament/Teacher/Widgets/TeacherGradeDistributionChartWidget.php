@@ -10,6 +10,8 @@ class TeacherGradeDistributionChartWidget extends ChartWidget
 {
     use HasWidgetShield;
 
+    protected ?string $pollingInterval = null;
+
     protected static ?int $sort = 3;
 
     protected int|string|array $columnSpan = 1;

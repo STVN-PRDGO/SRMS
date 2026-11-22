@@ -1,5 +1,6 @@
 @import '../../../../vendor/filament/filament/resources/css/theme.css';
 @import '../shared/panels.css';
+@import '../shared/liquid-nav.css';
 
 @source '../../../../app/Filament/Teacher/**/*';
 @source '../../../../resources/views/filament/**/*';

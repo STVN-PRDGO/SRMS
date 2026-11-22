@@ -99,21 +99,24 @@ class GradeCalculator
      */
     private function componentsFor(int $subjectId): Collection
     {
-        $own = GradingComponent::query()->where('subject_id', $subjectId)->get();
+        /** @var Collection<int, GradingComponent> $all */
+        $all = cache()->rememberForever('grading_components.all', fn () => GradingComponent::all());
+        $own = $all->where('subject_id', $subjectId);
 
         if ($own->isNotEmpty()) {
             return $own;
         }
 
-        return GradingComponent::query()->whereNull('subject_id')->get();
+        return $all->whereNull('subject_id');
     }
 
     private function scaleFor(float $grade): ?GradeScale
     {
-        return GradeScale::query()
-            ->where('min_grade', '<=', $grade)
-            ->where('max_grade', '>=', $grade)
-            ->orderByDesc('min_grade')
-            ->first();
+        /** @var Collection<int, GradeScale> $scales */
+        $scales = cache()->rememberForever('grade_scales.all', fn () => GradeScale::query()->orderByDesc('min_grade')->get());
+
+        return $scales->first(
+            fn (GradeScale $scale) => $grade >= (float) $scale->min_grade && $grade <= (float) $scale->max_grade
+        );
     }
 }

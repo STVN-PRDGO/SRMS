@@ -10,6 +10,8 @@ class TeacherClassPerformanceChartWidget extends ChartWidget
 {
     use HasWidgetShield;
 
+    protected ?string $pollingInterval = null;
+
     protected static ?int $sort = 2;
 
     protected int|string|array $columnSpan = [

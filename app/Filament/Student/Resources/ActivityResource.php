@@ -51,7 +51,11 @@ class ActivityResource extends Resource
 
     public static function getEloquentQuery(): Builder
     {
-        return parent::getEloquentQuery()->with('scores');
+        $studentId = StudentContext::id();
+
+        return parent::getEloquentQuery()->with([
+            'scores' => fn ($query) => $studentId ? $query->where('student_id', $studentId) : $query,
+        ]);
     }
 
     public static function getPages(): array

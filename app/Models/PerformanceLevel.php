@@ -12,6 +12,12 @@ class PerformanceLevel extends Model
 
     protected $fillable = ['name', 'min_grade', 'max_grade', 'min_attendance', 'order'];
 
+    protected static function booted(): void
+    {
+        static::saved(fn () => cache()->forget('performance_levels.all'));
+        static::deleted(fn () => cache()->forget('performance_levels.all'));
+    }
+
     protected function casts(): array
     {
         return [

@@ -11,6 +11,8 @@ class TeacherOverviewStatsWidget extends StatsOverviewWidget
 {
     use HasWidgetShield;
 
+    protected ?string $pollingInterval = null;
+
     protected static ?int $sort = 1;
 
     protected int|string|array $columnSpan = 'full';

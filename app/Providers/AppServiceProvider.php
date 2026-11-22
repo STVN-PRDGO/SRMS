@@ -12,6 +12,7 @@ use App\Observers\ScoreObserver;
 use App\Policies\AuditPolicy;
 use App\Support\PermissionName;
 use BezhanSalleh\FilamentShield\Facades\FilamentShield;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 use OwenIt\Auditing\Models\Audit;
@@ -25,6 +26,8 @@ class AppServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
+        Model::preventLazyLoading(! app()->isProduction());
+
         Gate::policy(Audit::class, AuditPolicy::class);
 
         FilamentShield::buildPermissionKeyUsing(

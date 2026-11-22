@@ -13,6 +13,7 @@ use App\Models\GradingPeriod;
 use App\Models\PerformanceLevel;
 use App\Models\PerformanceSummary;
 use App\Models\Student;
+use Illuminate\Support\Collection;
 
 class PerformanceEvaluator
 {
@@ -102,9 +103,8 @@ class PerformanceEvaluator
 
     private function levelFor(float $average, ?float $attendanceRate): ?PerformanceLevel
     {
-        $levels = PerformanceLevel::query()
-            ->orderBy('order')
-            ->get();
+        /** @var Collection<int, PerformanceLevel> $levels */
+        $levels = cache()->rememberForever('performance_levels.all', fn () => PerformanceLevel::query()->orderBy('order')->get());
 
         if ($levels->isEmpty()) {
             return null;

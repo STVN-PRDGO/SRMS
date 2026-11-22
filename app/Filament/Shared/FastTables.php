@@ -12,6 +12,7 @@ use App\Models\Score;
 use App\Models\Section;
 use App\Models\Student;
 use App\Models\Teacher;
+use App\Models\User;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 
@@ -21,8 +22,14 @@ class FastTables
     {
         Table::configureUsing(function (Table $table): void {
             $table
-                ->lazyLoaded()
+                ->deferLoading()
                 ->striped()
+                ->defaultPaginationPageOption(25)
+                ->paginationPageOptions([10, 25, 50])
+                ->persistFiltersInSession()
+                ->persistSortInSession()
+                ->persistSearchInSession()
+                ->persistColumnSearchesInSession()
                 ->modifyQueryUsing(fn (Builder $query): Builder => self::withRelations($query));
         });
     }
@@ -44,6 +51,7 @@ class FastTables
             Grade::class => ['gradingPeriod', 'classSubject.subject'],
             Student::class => ['user', 'section'],
             Teacher::class => ['user'],
+            User::class => ['roles'],
             Section::class => ['schoolYear', 'gradeLevel', 'adviser'],
             GradingPeriod::class => ['schoolYear'],
             GradingComponent::class => ['subject'],

@@ -17,6 +17,7 @@ use App\Models\Section;
 use App\Models\Student;
 use App\Models\Teacher;
 use App\Models\User;
+use Illuminate\Support\Facades\Cache;
 
 class AnalyticsService
 {
@@ -56,15 +57,18 @@ class AnalyticsService
 
         $attendanceRate = null;
         if ($latestPeriod) {
-            $counted = Attendance::query()
+            $attStats = Attendance::query()
                 ->whereDate('date', '>=', $latestPeriod->starts_on)
                 ->whereDate('date', '<=', $latestPeriod->ends_on)
+                ->selectRaw('COUNT(*) as total, SUM(CASE WHEN status IN (?, ?) THEN 1 ELSE 0 END) as present', [
+                    AttendanceStatus::Present->value,
+                    AttendanceStatus::Late->value,
+                ])
                 ->whereIn('status', [AttendanceStatus::Present, AttendanceStatus::Late, AttendanceStatus::Absent])
-                ->get();
+                ->first();
 
-            if ($counted->isNotEmpty()) {
-                $present = $counted->whereIn('status', [AttendanceStatus::Present, AttendanceStatus::Late])->count();
-                $attendanceRate = round(($present / $counted->count()) * 100, 1);
+            if ($attStats && (int) $attStats->total > 0) {
+                $attendanceRate = round(((int) $attStats->present / (int) $attStats->total) * 100, 1);
             }
         }
 
@@ -95,7 +99,7 @@ class AnalyticsService
             return ['labels' => [], 'data' => []];
         }
 
-        $levels = PerformanceLevel::query()->orderBy('order')->get();
+        $levels = Cache::rememberForever('performance_levels.all', fn () => PerformanceLevel::query()->orderBy('order')->get());
         $counts = PerformanceSummary::query()
             ->where('grading_period_id', $period->id)
             ->get()
@@ -171,18 +175,20 @@ class AnalyticsService
             return ['labels' => [], 'data' => []];
         }
 
-        $rows = Attendance::query()
+        $counts = Attendance::query()
             ->whereDate('date', '>=', $period->starts_on)
             ->whereDate('date', '<=', $period->ends_on)
-            ->get();
+            ->selectRaw('status, COUNT(*) as aggregate')
+            ->groupBy('status')
+            ->pluck('aggregate', 'status');
 
         return [
             'labels' => ['Present', 'Late', 'Absent', 'Excused'],
             'data' => [
-                $rows->where('status', AttendanceStatus::Present)->count(),
-                $rows->where('status', AttendanceStatus::Late)->count(),
-                $rows->where('status', AttendanceStatus::Absent)->count(),
-                $rows->where('status', AttendanceStatus::Excused)->count(),
+                (int) ($counts[AttendanceStatus::Present->value] ?? 0),
+                (int) ($counts[AttendanceStatus::Late->value] ?? 0),
+                (int) ($counts[AttendanceStatus::Absent->value] ?? 0),
+                (int) ($counts[AttendanceStatus::Excused->value] ?? 0),
             ],
         ];
     }
@@ -200,45 +206,47 @@ class AnalyticsService
      */
     public function getTeacherOverview(User $user): array
     {
-        $classes = ClassSubject::query()->visibleTo($user)->with('section')->get();
-        $classIds = $classes->pluck('id');
-        $sectionIds = $classes->pluck('section_id')->unique();
+        return Cache::remember("dash.teacher.{$user->id}", 60, function () use ($user): array {
+            $classes = ClassSubject::query()->visibleTo($user)->with('section')->get();
+            $classIds = $classes->pluck('id');
+            $sectionIds = $classes->pluck('section_id')->unique();
 
-        $studentsCount = Student::query()
-            ->whereIn('section_id', $sectionIds)
-            ->where('status', StudentStatus::Active)
-            ->count();
-
-        $avgGrade = Grade::query()
-            ->whereIn('class_subject_id', $classIds)
-            ->whereNotNull('raw_grade')
-            ->avg('raw_grade');
-
-        $pending = Activity::query()
-            ->whereIn('class_subject_id', $classIds)
-            ->whereHas('gradingPeriod', fn ($q) => $q->where('status', PeriodStatus::Open))
-            ->withCount('scores')
-            ->with(['classSubject.section' => fn ($q) => $q->withCount('students')])
-            ->get()
-            ->filter(fn (Activity $a) => $a->scores_count < ($a->classSubject->section->students_count ?? 0))
-            ->count();
-
-        $bottomLevel = PerformanceLevel::query()->orderBy('order', 'desc')->first();
-        $atRiskCount = 0;
-        if ($bottomLevel) {
-            $atRiskCount = PerformanceSummary::query()
-                ->where('performance_level_id', $bottomLevel->id)
-                ->whereHas('student', fn ($q) => $q->whereIn('section_id', $sectionIds))
+            $studentsCount = Student::query()
+                ->whereIn('section_id', $sectionIds)
+                ->where('status', StudentStatus::Active)
                 ->count();
-        }
 
-        return [
-            'classes_count' => $classes->count(),
-            'students_count' => $studentsCount,
-            'average_grade' => $avgGrade !== null ? round((float) $avgGrade, 2) : null,
-            'pending_activities' => $pending,
-            'at_risk_count' => $atRiskCount,
-        ];
+            $avgGrade = Grade::query()
+                ->whereIn('class_subject_id', $classIds)
+                ->whereNotNull('raw_grade')
+                ->avg('raw_grade');
+
+            $pending = Activity::query()
+                ->whereIn('class_subject_id', $classIds)
+                ->whereHas('gradingPeriod', fn ($q) => $q->where('status', PeriodStatus::Open))
+                ->withCount('scores')
+                ->with(['classSubject.section' => fn ($q) => $q->withCount('students')])
+                ->get()
+                ->filter(fn (Activity $a) => $a->scores_count < ($a->classSubject->section->students_count ?? 0))
+                ->count();
+
+            $bottomLevel = PerformanceLevel::query()->orderBy('order', 'desc')->first();
+            $atRiskCount = 0;
+            if ($bottomLevel) {
+                $atRiskCount = PerformanceSummary::query()
+                    ->where('performance_level_id', $bottomLevel->id)
+                    ->whereHas('student', fn ($q) => $q->whereIn('section_id', $sectionIds))
+                    ->count();
+            }
+
+            return [
+                'classes_count' => $classes->count(),
+                'students_count' => $studentsCount,
+                'average_grade' => $avgGrade !== null ? round((float) $avgGrade, 2) : null,
+                'pending_activities' => $pending,
+                'at_risk_count' => $atRiskCount,
+            ];
+        });
     }
 
     /**

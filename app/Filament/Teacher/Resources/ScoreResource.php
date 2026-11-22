@@ -16,6 +16,8 @@ class ScoreResource extends Resource
 {
     use ScopesByPermission;
 
+    protected static bool $isGloballySearchable = false;
+
     protected static ?string $model = Score::class;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedPencilSquare;

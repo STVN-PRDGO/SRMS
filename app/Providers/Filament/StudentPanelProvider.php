@@ -24,6 +24,7 @@ class StudentPanelProvider extends PanelProvider
             ->brandName('SRMS Student')
             ->topNavigation()
             ->spa(hasPrefetching: true)
+            ->globalSearch(false)
             ->maxContentWidth('7xl')
             ->colors(['primary' => Color::Emerald])
             ->viteTheme('resources/css/filament/student/theme.css')
@@ -44,6 +45,10 @@ class StudentPanelProvider extends PanelProvider
                 fn (): string => auth()->user()?->can('view_as_student')
                     ? Blade::render('<div class="srms-banner bg-emerald-100 text-emerald-950">You are viewing the Student panel as Admin. <a href="{{ $url }}">Back to Admin</a></div>', ['url' => filament()->getPanel('admin')->getUrl()])
                     : '',
+            )
+            ->renderHook(
+                PanelsRenderHook::BODY_END,
+                fn (): string => Blade::render('@include("filament.shared.liquid-nav-script")'),
             )
             ->middleware(PanelDefaults::middleware())
             ->authMiddleware([Authenticate::class]);

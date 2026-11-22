@@ -24,6 +24,8 @@ class AttendanceResource extends Resource
 {
     use ScopesByPermission;
 
+    protected static bool $isGloballySearchable = false;
+
     protected static ?string $model = Attendance::class;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedCalendarDays;
@@ -39,7 +41,7 @@ class AttendanceResource extends Resource
                 ->required()
                 ->searchable()
                 ->preload(),
-            Select::make('student_id')->relationship('student.user', 'name')->required()->searchable()->preload(),
+            Select::make('student_id')->relationship('student.user', 'name')->required()->searchable(),
             DatePicker::make('date')->required(),
             Select::make('status')->options(AttendanceStatus::class)->required(),
             TextInput::make('remarks'),

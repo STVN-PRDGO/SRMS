@@ -1,0 +1,271 @@
+/* Floating Glassy Transparent Navbar & Liquid Navigation Highlight */
+/* Applied exclusively to Teacher and Student Panels */
+
+:is(.fi-panel-teacher, .fi-panel-student).fi-body-has-top-navigation {
+    --topbar-height: 4.75rem;
+}
+
+/* Floating Navbar Container */
+:is(.fi-panel-teacher, .fi-panel-student) .fi-topbar-ctn {
+    position: sticky;
+    top: 0.75rem;
+    z-index: 35;
+    padding-inline: 1rem;
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    pointer-events: none;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@media (min-width: 640px) {
+    :is(.fi-panel-teacher, .fi-panel-student) .fi-topbar-ctn {
+        padding-inline: 1.5rem;
+    }
+}
+
+/* Floating Glass Navbar Pill */
+:is(.fi-panel-teacher, .fi-panel-student) .fi-topbar {
+    pointer-events: auto;
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(8rem, 1fr) auto minmax(8rem, 1fr);
+    align-items: center;
+    column-gap: 1.25rem;
+    max-width: 82rem;
+    margin: 0 auto;
+    min-height: 3.75rem;
+    height: 3.75rem;
+    border-radius: 9999px;
+    padding-inline: 1.25rem;
+
+    /* Frosted Glass Surface */
+    background: rgba(255, 255, 255, 0.7) !important;
+    backdrop-filter: blur(20px) saturate(190%) contrast(95%) !important;
+    -webkit-backdrop-filter: blur(20px) saturate(190%) contrast(95%) !important;
+
+    /* Prismatic glass borders */
+    border: 1px solid rgba(255, 255, 255, 0.65) !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.95) !important;
+
+    /* Stratified floating glass elevation */
+    box-shadow:
+        0 4px 6px -1px rgba(0, 0, 0, 0.02),
+        0 14px 34px -4px rgba(15, 23, 42, 0.08),
+        inset 0 1px 1px 0 rgba(255, 255, 255, 0.95),
+        inset 0 -1px 1px 0 rgba(0, 0, 0, 0.02) !important;
+
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Dark Mode Floating Glass */
+:is(.fi-panel-teacher, .fi-panel-student) :is(.dark, .dark *) .fi-topbar {
+    background: rgba(15, 23, 42, 0.68) !important;
+    backdrop-filter: blur(20px) saturate(190%) contrast(95%) !important;
+    -webkit-backdrop-filter: blur(20px) saturate(190%) contrast(95%) !important;
+    border: 1px solid rgba(255, 255, 255, 0.09) !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.2) !important;
+    box-shadow:
+        0 4px 6px -1px rgba(0, 0, 0, 0.3),
+        0 20px 40px -4px rgba(0, 0, 0, 0.6),
+        inset 0 1px 1px 0 rgba(255, 255, 255, 0.2),
+        inset 0 -1px 1px 0 rgba(0, 0, 0, 0.4) !important;
+}
+
+/* Topbar Components Alignment */
+:is(.fi-panel-teacher, .fi-panel-student) .fi-topbar-start {
+    grid-column: 1;
+    justify-self: start;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-inline-end: 0;
+}
+
+:is(.fi-panel-teacher, .fi-panel-student) .fi-topbar-end {
+    grid-column: 3;
+    justify-self: end;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-inline-start: 0;
+}
+
+/* Centered Navigation Floating Island Track */
+@media (min-width: 1024px) {
+    :is(.fi-panel-teacher, .fi-panel-student) .fi-topbar-nav-groups {
+        grid-column: 2;
+        justify-self: center;
+        margin-inline: 0;
+        display: flex;
+        align-items: center;
+        position: relative;
+        padding: 0.25rem;
+        gap: 0.25rem;
+        border-radius: 9999px;
+        flex-wrap: nowrap;
+
+        /* Floating inner capsule track */
+        background: rgba(241, 245, 249, 0.65);
+        border: 1px solid rgba(226, 232, 240, 0.65);
+        box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(255, 255, 255, 0.6);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+    }
+
+    :is(.fi-panel-teacher, .fi-panel-student) :is(.dark, .dark *) .fi-topbar-nav-groups {
+        background: rgba(30, 41, 59, 0.5);
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.3);
+    }
+}
+
+/* Navigation Items */
+:is(.fi-panel-teacher, .fi-panel-student) .fi-topbar-item {
+    position: relative;
+    z-index: 2;
+    list-style: none;
+    margin: 0;
+}
+
+:is(.fi-panel-teacher, .fi-panel-student) .fi-topbar-item-btn {
+    position: relative;
+    z-index: 2;
+    border-radius: 9999px !important;
+    padding-inline: 0.95rem !important;
+    padding-block: 0.45rem !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+:is(.fi-panel-teacher, .fi-panel-student) .fi-topbar-item-label {
+    font-size: 0.84rem;
+    font-weight: 500;
+    transition: color 0.2s ease;
+}
+
+/* Hover State on Inactive Buttons */
+:is(.fi-panel-teacher, .fi-panel-student) .fi-topbar-item:not(.fi-active) .fi-topbar-item-btn:hover {
+    background: rgba(255, 255, 255, 0.4) !important;
+}
+
+:is(.fi-panel-teacher, .fi-panel-student) :is(.dark, .dark *) .fi-topbar-item:not(.fi-active) .fi-topbar-item-btn:hover {
+    background: rgba(255, 255, 255, 0.06) !important;
+}
+
+/* Liquid Glider Highlight Capsule */
+.srms-liquid-glider {
+    position: absolute;
+    top: 4px;
+    height: calc(100% - 8px);
+    border-radius: 9999px;
+    pointer-events: none;
+    z-index: 1;
+    opacity: 0;
+    will-change: transform, width;
+    transition:
+        transform 0.42s cubic-bezier(0.34, 1.45, 0.64, 1),
+        width 0.36s cubic-bezier(0.25, 1, 0.5, 1),
+        opacity 0.22s ease;
+}
+
+/* Specular Meniscus Light Curve (Top Gloss) */
+.srms-liquid-glider::before {
+    content: '';
+    position: absolute;
+    inset: 1px 2px auto 2px;
+    height: 48%;
+    border-radius: 9999px;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.85) 0%, rgba(255, 255, 255, 0) 100%);
+    pointer-events: none;
+}
+
+/* Ambient Liquid Sheen (Bottom Fluid Glow) */
+.srms-liquid-glider::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 9999px;
+    background: radial-gradient(circle at 50% 120%, rgba(255, 255, 255, 0.4), transparent 70%);
+    opacity: 0.8;
+    pointer-events: none;
+}
+
+/* Teacher Panel Liquid Theme (Blue Sapphire Drop) */
+.fi-panel-teacher .srms-liquid-glider {
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.96) 0%, rgba(239, 246, 255, 0.9) 100%);
+    border: 1px solid rgba(147, 197, 253, 0.65);
+    box-shadow:
+        0 4px 14px -1px rgba(37, 99, 235, 0.2),
+        0 2px 6px -1px rgba(59, 130, 246, 0.12),
+        inset 0 1px 1.5px 0 rgba(255, 255, 255, 1),
+        inset 0 -1px 2px 0 rgba(59, 130, 246, 0.12);
+}
+
+.fi-panel-teacher :is(.dark, .dark *) .srms-liquid-glider {
+    background: linear-gradient(180deg, rgba(30, 58, 138, 0.55) 0%, rgba(30, 64, 175, 0.35) 100%);
+    border: 1px solid rgba(96, 165, 250, 0.35);
+    box-shadow:
+        0 0 18px 2px rgba(59, 130, 246, 0.32),
+        0 4px 14px -1px rgba(37, 99, 235, 0.42),
+        inset 0 1px 1px 0 rgba(255, 255, 255, 0.35),
+        inset 0 -1px 1px 0 rgba(59, 130, 246, 0.3);
+}
+
+.fi-panel-teacher .fi-topbar-item.fi-active .fi-topbar-item-btn > .fi-icon,
+.fi-panel-teacher .fi-topbar-item.fi-active .fi-topbar-item-label {
+    color: rgb(29, 78, 216) !important;
+    font-weight: 600 !important;
+}
+
+.fi-panel-teacher :is(.dark, .dark *) .fi-topbar-item.fi-active .fi-topbar-item-btn > .fi-icon,
+.fi-panel-teacher :is(.dark, .dark *) .fi-topbar-item.fi-active .fi-topbar-item-label {
+    color: rgb(147, 197, 253) !important;
+    font-weight: 600 !important;
+}
+
+/* Student Panel Liquid Theme (Emerald Waterdrop) */
+.fi-panel-student .srms-liquid-glider {
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.96) 0%, rgba(236, 253, 245, 0.9) 100%);
+    border: 1px solid rgba(110, 231, 183, 0.65);
+    box-shadow:
+        0 4px 14px -1px rgba(5, 150, 105, 0.2),
+        0 2px 6px -1px rgba(16, 185, 129, 0.12),
+        inset 0 1px 1.5px 0 rgba(255, 255, 255, 1),
+        inset 0 -1px 2px 0 rgba(16, 185, 129, 0.12);
+}
+
+.fi-panel-student :is(.dark, .dark *) .srms-liquid-glider {
+    background: linear-gradient(180deg, rgba(6, 78, 59, 0.55) 0%, rgba(4, 120, 87, 0.35) 100%);
+    border: 1px solid rgba(52, 211, 153, 0.35);
+    box-shadow:
+        0 0 18px 2px rgba(16, 185, 129, 0.32),
+        0 4px 14px -1px rgba(5, 150, 105, 0.42),
+        inset 0 1px 1px 0 rgba(255, 255, 255, 0.35),
+        inset 0 -1px 1px 0 rgba(16, 185, 129, 0.3);
+}
+
+.fi-panel-student .fi-topbar-item.fi-active .fi-topbar-item-btn > .fi-icon,
+.fi-panel-student .fi-topbar-item.fi-active .fi-topbar-item-label {
+    color: rgb(4, 120, 87) !important;
+    font-weight: 600 !important;
+}
+
+.fi-panel-student :is(.dark, .dark *) .fi-topbar-item.fi-active .fi-topbar-item-btn > .fi-icon,
+.fi-panel-student :is(.dark, .dark *) .fi-topbar-item.fi-active .fi-topbar-item-label {
+    color: rgb(110, 231, 183) !important;
+    font-weight: 600 !important;
+}
+
+/* Fallback state when JavaScript is not yet loaded */
+:is(.fi-panel-teacher, .fi-panel-student) .fi-topbar-nav-groups:not(.srms-has-glider) .fi-topbar-item.fi-active .fi-topbar-item-btn {
+    background: rgba(255, 255, 255, 0.95) !important;
+    border: 1px solid rgba(226, 232, 240, 0.8) !important;
+    box-shadow: 0 2px 6px -1px rgba(0, 0, 0, 0.08) !important;
+}
+
+:is(.fi-panel-teacher, .fi-panel-student) :is(.dark, .dark *) .fi-topbar-nav-groups:not(.srms-has-glider) .fi-topbar-item.fi-active .fi-topbar-item-btn {
+    background: rgba(255, 255, 255, 0.1) !important;
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
+}

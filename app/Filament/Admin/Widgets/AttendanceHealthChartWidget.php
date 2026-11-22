@@ -10,6 +10,8 @@ class AttendanceHealthChartWidget extends ChartWidget
 {
     use HasWidgetShield;
 
+    protected ?string $pollingInterval = null;
+
     protected static ?int $sort = 4;
 
     protected int|string|array $columnSpan = 1;

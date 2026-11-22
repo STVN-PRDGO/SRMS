@@ -11,6 +11,12 @@ class GradeScale extends Model
 
     protected $fillable = ['min_grade', 'max_grade', 'letter', 'remark'];
 
+    protected static function booted(): void
+    {
+        static::saved(fn () => cache()->forget('grade_scales.all'));
+        static::deleted(fn () => cache()->forget('grade_scales.all'));
+    }
+
     protected function casts(): array
     {
         return [

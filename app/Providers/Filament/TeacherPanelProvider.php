@@ -45,6 +45,10 @@ class TeacherPanelProvider extends PanelProvider
                     ? Blade::render('<div class="srms-banner bg-blue-100 text-blue-950">You are viewing the Teacher panel as Admin. <a href="{{ $url }}">Back to Admin</a></div>', ['url' => filament()->getPanel('admin')->getUrl()])
                     : '',
             )
+            ->renderHook(
+                PanelsRenderHook::BODY_END,
+                fn (): string => Blade::render('@include("filament.shared.liquid-nav-script")'),
+            )
             ->middleware(PanelDefaults::middleware())
             ->authMiddleware([Authenticate::class]);
     }

@@ -23,6 +23,9 @@ class GradingComponent extends Model
                 $component->exists ? $component->id : null,
             );
         });
+
+        static::saved(fn () => cache()->forget('grading_components.all'));
+        static::deleted(fn () => cache()->forget('grading_components.all'));
     }
 
     protected function casts(): array
