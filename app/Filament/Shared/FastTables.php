@@ -45,8 +45,8 @@ class FastTables
         }
 
         $with = match ($query->getModel()::class) {
-            Activity::class => ['classSubject.subject', 'gradingPeriod', 'gradingComponent'],
-            Attendance::class => ['student.user', 'classSubject.subject'],
+            Activity::class => ['classSubject.subject', 'classSubject.section', 'gradingPeriod', 'gradingComponent'],
+            Attendance::class => ['student.user', 'classSubject.subject', 'classSubject.section'],
             Score::class => ['activity', 'student.user'],
             Grade::class => ['gradingPeriod', 'classSubject.subject'],
             Student::class => ['user', 'section'],

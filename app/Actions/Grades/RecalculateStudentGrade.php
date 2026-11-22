@@ -5,14 +5,17 @@ namespace App\Actions\Grades;
 use App\Models\ClassSubject;
 use App\Models\Grade;
 use App\Models\GradingPeriod;
+use App\Models\SchoolSetting;
 use App\Models\Student;
 use App\Services\GradeCalculator;
+use App\Services\OfficialGrade;
 use App\Services\PerformanceEvaluator;
 
 class RecalculateStudentGrade
 {
     public function __construct(
         private readonly GradeCalculator $calculator,
+        private readonly OfficialGrade $officialGrade,
         private readonly PerformanceEvaluator $evaluator,
     ) {}
 
@@ -37,6 +40,16 @@ class RecalculateStudentGrade
         }
 
         $result = $this->calculator->calculate($student, $classSubject, $period);
+
+        if ($result['raw_grade'] === null) {
+            return;
+        }
+
+        $track = SchoolSetting::current()?->grading_track;
+
+        if ($track !== null) {
+            $result = $this->officialGrade->fromInitial($track, $result['raw_grade']);
+        }
 
         Grade::query()->updateOrCreate(
             [

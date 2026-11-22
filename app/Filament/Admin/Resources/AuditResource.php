@@ -2,6 +2,7 @@
 
 namespace App\Filament\Admin\Resources;
 
+use App\Filament\Admin\AdminNavigationGroup;
 use App\Filament\Admin\Resources\AuditResource\Pages\ManageAudits;
 use BackedEnum;
 use Filament\Resources\Resource;
@@ -17,9 +18,15 @@ class AuditResource extends Resource
 
     protected static ?string $model = Audit::class;
 
+    protected static ?string $navigationLabel = 'Activity log';
+
+    protected static ?string $pluralModelLabel = 'Activity log';
+
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedClipboardDocumentList;
 
-    protected static string|\UnitEnum|null $navigationGroup = 'Reports';
+    protected static string|\UnitEnum|null $navigationGroup = AdminNavigationGroup::Access;
+
+    protected static ?int $navigationSort = 3;
 
     public static function form(Schema $schema): Schema
     {

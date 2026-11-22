@@ -8,7 +8,7 @@
             <thead>
                 <tr class="border-b border-gray-200 dark:border-gray-800 bg-gray-50/75 dark:bg-gray-800/75">
                     @foreach ($columns as $column)
-                        <th class="px-5 py-3 text-left font-semibold text-xs uppercase tracking-wider text-gray-600 dark:text-gray-400">{{ $column }}</th>
+                        <th scope="col" class="px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-600 dark:text-gray-400">{{ $column }}</th>
                     @endforeach
                 </tr>
             </thead>

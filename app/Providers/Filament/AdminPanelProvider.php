@@ -2,7 +2,9 @@
 
 namespace App\Providers\Filament;
 
+use App\Filament\Admin\AdminNavigationGroup;
 use App\Filament\Admin\Pages\Dashboard;
+use App\Filament\Admin\Pages\Profile as AdminProfile;
 use App\Filament\Shared\PanelDefaults;
 use App\Filament\Shared\WelcomeBanner;
 use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
@@ -23,6 +25,7 @@ class AdminPanelProvider extends PanelProvider
             ->login()
             ->brandName('SRMS Admin')
             ->sidebarCollapsibleOnDesktop()
+            ->navigationGroups(AdminNavigationGroup::class)
             ->spa(hasPrefetching: true)
             ->colors(['primary' => Color::Amber])
             ->viteTheme('resources/css/filament/admin/theme.css')
@@ -32,6 +35,10 @@ class AdminPanelProvider extends PanelProvider
             ->pages([Dashboard::class])
             ->widgets([WelcomeBanner::class])
             ->userMenuItems([
+                MenuItem::make()
+                    ->label('Profile')
+                    ->icon('heroicon-o-user-circle')
+                    ->url(fn (): string => AdminProfile::getUrl()),
                 MenuItem::make()
                     ->label('Teacher Panel')
                     ->icon('heroicon-o-academic-cap')
@@ -43,7 +50,12 @@ class AdminPanelProvider extends PanelProvider
                     ->url(fn (): string => filament()->getPanel('student')->getUrl())
                     ->visible(fn (): bool => (bool) auth()->user()?->can('access_student_panel')),
             ])
-            ->plugin(FilamentShieldPlugin::make())
+            ->plugin(
+                FilamentShieldPlugin::make()
+                    ->navigationGroup(AdminNavigationGroup::Access)
+                    ->navigationLabel('Roles')
+                    ->navigationSort(2),
+            )
             ->middleware(PanelDefaults::middleware())
             ->authMiddleware([Authenticate::class]);
     }

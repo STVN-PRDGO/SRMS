@@ -4,6 +4,7 @@ namespace App\Filament\Teacher\Widgets;
 
 use App\Services\AnalyticsService;
 use BezhanSalleh\FilamentShield\Traits\HasWidgetShield;
+use Filament\Support\Components\Attributes\Unexposed;
 use Filament\Widgets\ChartWidget;
 
 class TeacherGradeDistributionChartWidget extends ChartWidget
@@ -23,6 +24,33 @@ class TeacherGradeDistributionChartWidget extends ChartWidget
     protected function getType(): string
     {
         return 'doughnut';
+    }
+
+    protected function getOptions(): array
+    {
+        return [
+            'maintainAspectRatio' => false,
+            'cutout' => '68%',
+            'plugins' => [
+                'legend' => [
+                    'position' => 'bottom',
+                    'labels' => [
+                        'color' => '#d8dee9',
+                        'usePointStyle' => true,
+                        'pointStyle' => 'circle',
+                        'boxWidth' => 8,
+                        'padding' => 14,
+                    ],
+                ],
+                'tooltip' => [
+                    'backgroundColor' => '#111827',
+                    'titleColor' => '#f3f4f6',
+                    'bodyColor' => '#d1d5db',
+                    'borderColor' => '#374151',
+                    'borderWidth' => 1,
+                ],
+            ],
+        ];
     }
 
     protected function getData(): array
@@ -45,5 +73,17 @@ class TeacherGradeDistributionChartWidget extends ChartWidget
             ],
             'labels' => $distribution['labels'],
         ];
+    }
+
+    #[Unexposed]
+    public function getChartAssistiveContent(): string
+    {
+        $chartData = $this->getCachedData();
+        $values = $chartData['datasets'][0]['data'] ?? [];
+        $summary = collect($chartData['labels'] ?? [])
+            ->map(fn (string $label, int $index): string => $label.': '.number_format((int) ($values[$index] ?? 0)))
+            ->implode('; ');
+
+        return 'Grade distribution across your classes: '.$summary;
     }
 }

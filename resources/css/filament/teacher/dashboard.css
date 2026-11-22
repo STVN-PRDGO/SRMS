@@ -1,0 +1,306 @@
+.fi-panel-teacher:has(.fi-page.srms-teacher-dashboard) {
+    background: #070d17;
+}
+
+.fi-panel-teacher:has(.fi-page.srms-teacher-dashboard) .fi-main-ctn,
+.fi-panel-teacher:has(.fi-page.srms-teacher-dashboard) .fi-main {
+    background:
+        radial-gradient(ellipse at 12% 0%, rgb(31 70 126 / 16%), transparent 38rem),
+        linear-gradient(160deg, #09101d 0%, #080d17 58%, #0a101b 100%);
+}
+
+.fi-panel-teacher:has(.fi-page.srms-teacher-dashboard) .fi-topbar {
+    border-color: #253149 !important;
+    background:
+        linear-gradient(130deg, transparent 0 4%, rgb(158 18 65 / 30%) 4% 8%, transparent 8% 84%, rgb(158 18 65 / 30%) 84% 90%, transparent 90%),
+        linear-gradient(105deg, #190e24 0%, #0f1c30 48%, #07141b 100%) !important;
+    color: #f5f7fb;
+}
+
+.fi-panel-teacher:has(.fi-page.srms-teacher-dashboard) .fi-topbar-nav-groups {
+    border: 1px solid rgb(155 180 222 / 25%);
+    background: rgb(20 31 49 / 78%) !important;
+    box-shadow: inset 0 1px rgb(255 255 255 / 7%), 0 8px 28px rgb(0 0 0 / 25%);
+    backdrop-filter: blur(18px);
+}
+
+.fi-panel-teacher:has(.fi-page.srms-teacher-dashboard) .srms-liquid-glider {
+    border: 1px solid rgb(147 197 253 / 80%) !important;
+    background: linear-gradient(180deg, #348df8 0%, #1e5fc2 100%) !important;
+    box-shadow: 0 0 20px rgb(37 99 235 / 55%), inset 0 1px rgb(255 255 255 / 36%) !important;
+}
+
+.fi-panel-teacher:has(.fi-page.srms-teacher-dashboard) .fi-topbar-item.fi-active .fi-topbar-item-btn > .fi-icon,
+.fi-panel-teacher:has(.fi-page.srms-teacher-dashboard) .fi-topbar-item.fi-active .fi-topbar-item-label {
+    color: #fff !important;
+}
+
+.fi-page.srms-teacher-dashboard {
+    gap: 0.85rem;
+    color: #e9edf5;
+}
+
+.fi-page.srms-teacher-dashboard .fi-header {
+    position: relative;
+    overflow: clip;
+    border: 1px solid #1d2a40;
+    border-radius: 1rem;
+    background:
+        linear-gradient(105deg, #0e1a2c 0%, rgb(11 19 32 / 96%) 54%, rgb(8 19 31 / 88%) 100%),
+        radial-gradient(ellipse at 80% 50%, rgb(28 78 117 / 35%), transparent 35rem);
+    padding: 1.1rem 1.25rem;
+}
+
+.fi-page.srms-teacher-dashboard .fi-header::after {
+    position: absolute;
+    inset: 0 0 0 auto;
+    width: min(36%, 25rem);
+    background: linear-gradient(130deg, transparent 0 45%, rgb(20 116 104 / 20%) 45% 50%, transparent 50% 75%, rgb(141 20 63 / 35%) 75% 82%, transparent 82%);
+    content: "";
+    pointer-events: none;
+}
+
+.fi-page.srms-teacher-dashboard .fi-header-heading {
+    color: #f4f6fa;
+    font-size: clamp(1.5rem, 2.2vw, 2rem);
+    font-weight: 700;
+    letter-spacing: -0.04em;
+}
+
+.fi-page.srms-teacher-dashboard .fi-header-subheading {
+    color: #b2bfd2;
+}
+
+.fi-page.srms-teacher-dashboard .fi-page-content {
+    gap: 0.9rem;
+}
+
+.fi-page.srms-teacher-dashboard .fi-account-widget.fi-wi-widget,
+.fi-page.srms-teacher-dashboard .fi-wi-widget:has(.fi-account-widget) {
+    grid-column: span 1 !important;
+    align-self: stretch;
+}
+
+.fi-page.srms-teacher-dashboard .fi-account-widget,
+.fi-page.srms-teacher-dashboard .fi-account-widget > .fi-section {
+    height: 100%;
+}
+
+.fi-page.srms-teacher-dashboard .fi-account-widget > .fi-section {
+    overflow: clip;
+    border: 1px solid #74304c;
+    border-radius: 1rem;
+    background:
+        radial-gradient(ellipse at 100% 100%, rgb(227 91 73 / 32%), transparent 44%),
+        linear-gradient(130deg, #71102f 0%, #390d24 52%, #171827 100%);
+    box-shadow: inset 0 1px rgb(255 255 255 / 9%), 0 12px 30px rgb(0 0 0 / 24%);
+}
+
+.fi-page.srms-teacher-dashboard .fi-account-widget .fi-section-content {
+    min-height: 8.8rem;
+    align-items: center;
+    padding: 1rem;
+}
+
+.fi-page.srms-teacher-dashboard .fi-account-widget .fi-avatar {
+    border: 2px solid rgb(255 255 255 / 28%);
+    box-shadow: 0 5px 22px rgb(0 0 0 / 26%);
+}
+
+.fi-page.srms-teacher-dashboard .fi-account-widget-heading {
+    color: #f5dfe7;
+    font-size: 0.78rem;
+    font-weight: 500;
+}
+
+.fi-page.srms-teacher-dashboard .fi-account-widget-user-name {
+    color: #fff;
+    font-size: 1.3rem;
+    font-weight: 700;
+    letter-spacing: -0.035em;
+}
+
+.fi-page.srms-teacher-dashboard .fi-account-widget-logout-form .fi-btn {
+    min-height: 2.6rem;
+    border: 1px solid rgb(255 255 255 / 22%);
+    background: rgb(11 15 25 / 34%);
+    color: #f9f4f6;
+}
+
+.fi-page.srms-teacher-dashboard .fi-wi-stats-overview .fi-section {
+    overflow: visible;
+    border: 0;
+    background: transparent;
+    box-shadow: none;
+    padding: 0;
+}
+
+.fi-page.srms-teacher-dashboard .fi-wi-stats-overview .fi-section-content {
+    gap: 0.8rem;
+}
+
+.fi-page.srms-teacher-dashboard .fi-wi-stats-overview-stat {
+    min-height: 8.8rem;
+    overflow: hidden;
+    border: 1px solid #25364d;
+    border-radius: 1rem;
+    background:
+        radial-gradient(ellipse at 100% 100%, rgb(36 91 157 / 14%), transparent 60%),
+        linear-gradient(145deg, #141f31, #101725 75%);
+    box-shadow: inset 0 1px rgb(255 255 255 / 4%), 0 10px 28px -24px #000;
+    padding: 1rem;
+    transition: border-color 180ms ease, transform 180ms cubic-bezier(0.16, 1, 0.3, 1), box-shadow 180ms ease;
+}
+
+.fi-page.srms-teacher-dashboard .fi-wi-stats-overview-stat:hover {
+    transform: translateY(-2px);
+    border-color: #385678;
+    box-shadow: inset 0 1px rgb(255 255 255 / 5%), 0 14px 32px -24px rgb(34 122 215 / 45%);
+}
+
+.fi-page.srms-teacher-dashboard .fi-wi-stats-overview-stat-label {
+    color: #bdc8d8;
+    font-size: 0.78rem;
+}
+
+.fi-page.srms-teacher-dashboard .fi-wi-stats-overview-stat-value,
+.fi-page.srms-teacher-dashboard .fi-wi-stats-overview-stat-placeholder {
+    color: #f5f7fb;
+    font-size: clamp(1.45rem, 2.2vw, 1.9rem);
+    font-variant-numeric: tabular-nums;
+}
+
+.fi-page.srms-teacher-dashboard .fi-wi-stats-overview-stat-description {
+    color: #98a7bb;
+    font-size: 0.7rem;
+}
+
+.fi-page.srms-teacher-dashboard .fi-wi-chart .fi-section {
+    height: 100%;
+    border: 1px solid #27364b;
+    border-radius: 1rem;
+    background:
+        radial-gradient(ellipse at 92% 0%, rgb(29 79 128 / 14%), transparent 22rem),
+        linear-gradient(145deg, #111b2b, #0e1522 72%);
+    box-shadow: inset 0 1px rgb(255 255 255 / 4%), 0 12px 30px -25px #000;
+}
+
+.fi-page.srms-teacher-dashboard .fi-wi-chart .fi-section-header {
+    border-bottom: 1px solid #273142;
+    padding: 1rem 1.1rem 0.85rem;
+}
+
+.fi-page.srms-teacher-dashboard .fi-wi-chart .fi-section-heading {
+    color: #f2f5fa;
+    font-size: 0.95rem;
+}
+
+.fi-page.srms-teacher-dashboard .fi-wi-chart .fi-section-description {
+    color: #96a4b8;
+    font-size: 0.72rem;
+}
+
+.fi-page.srms-teacher-dashboard .fi-wi-chart .fi-section-content {
+    padding: 0.8rem 1rem 1rem;
+}
+
+.fi-page.srms-teacher-dashboard .fi-wi-chart-frame {
+    min-height: 17rem;
+}
+
+.fi-page.srms-teacher-dashboard .fi-wi-chart-canvas-ctn {
+    min-height: 17rem;
+}
+
+@media (max-width: 64rem) {
+    .fi-page.srms-teacher-dashboard .fi-account-widget.fi-wi-widget,
+    .fi-page.srms-teacher-dashboard .fi-wi-widget:has(.fi-account-widget) {
+        grid-column: 1 / -1 !important;
+    }
+
+    .fi-page.srms-teacher-dashboard .fi-wi-chart-frame,
+    .fi-page.srms-teacher-dashboard .fi-wi-chart-canvas-ctn {
+        min-height: 15rem;
+    }
+}
+
+@media (max-width: 40rem) {
+    .fi-page.srms-teacher-dashboard .fi-header {
+        padding: 0.9rem;
+    }
+
+    .fi-page.srms-teacher-dashboard .fi-account-widget .fi-section-content {
+        min-height: 7rem;
+        flex-wrap: wrap;
+    }
+
+    .fi-page.srms-teacher-dashboard .fi-account-widget-logout-form {
+        margin-inline-start: auto;
+    }
+
+    .fi-page.srms-teacher-dashboard .fi-wi-chart .fi-section-header,
+    .fi-page.srms-teacher-dashboard .fi-wi-chart .fi-section-content {
+        padding-inline: 0.75rem;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .fi-page.srms-teacher-dashboard .fi-wi-stats-overview-stat {
+        transition: none;
+    }
+}
+
+@media (forced-colors: active) {
+    .fi-page.srms-teacher-dashboard .fi-wi-stats-overview-stat,
+    .fi-page.srms-teacher-dashboard .fi-wi-chart .fi-section,
+    .fi-page.srms-teacher-dashboard .fi-account-widget > .fi-section {
+        border: 1px solid CanvasText;
+    }
+}
+
+/* Light theme: retain the school palette while restoring the panel's default readable surfaces. */
+html:not(.dark) .fi-panel-teacher:has(.fi-page.srms-teacher-dashboard) {
+    background: #f4f6f8;
+}
+
+html:not(.dark) .fi-panel-teacher:has(.fi-page.srms-teacher-dashboard) .fi-main-ctn,
+html:not(.dark) .fi-panel-teacher:has(.fi-page.srms-teacher-dashboard) .fi-main {
+    background: radial-gradient(ellipse at 12% 0%, rgb(31 70 126 / 6%), transparent 38rem), #f4f6f8;
+}
+
+html:not(.dark) .fi-panel-teacher:has(.fi-page.srms-teacher-dashboard) .fi-topbar {
+    border-color: #e2e7ef !important;
+    background: linear-gradient(110deg, #fff 0 38%, #f7f8fa 68%, #f9edf1 100%) !important;
+    color: #243044;
+}
+
+html:not(.dark) .fi-panel-teacher:has(.fi-page.srms-teacher-dashboard) .fi-topbar-nav-groups {
+    border-color: #e1e6ef;
+    background: rgb(255 255 255 / 88%) !important;
+    box-shadow: 0 8px 24px rgb(15 23 42 / 8%);
+}
+
+html:not(.dark) .fi-page.srms-teacher-dashboard { color: #243044; }
+
+html:not(.dark) .fi-page.srms-teacher-dashboard .fi-header {
+    border-color: #dce3ec;
+    background: linear-gradient(105deg, #fff 0%, #f7f8fa 60%, #eaf2f1 100%);
+}
+
+html:not(.dark) .fi-page.srms-teacher-dashboard .fi-header-heading { color: #202b3b; }
+html:not(.dark) .fi-page.srms-teacher-dashboard .fi-header-subheading { color: #5c687b; }
+
+html:not(.dark) .fi-page.srms-teacher-dashboard .fi-wi-stats-overview-stat {
+    border-color: #dce3ec;
+    background: radial-gradient(ellipse at 100% 100%, rgb(36 91 157 / 5%), transparent 60%), linear-gradient(145deg, #fff, #f8fafc 75%);
+    box-shadow: inset 0 1px #fff, 0 10px 24px -22px rgb(15 23 42 / 32%);
+}
+
+html:not(.dark) .fi-page.srms-teacher-dashboard .fi-wi-stats-overview-stat:hover { border-color: #b7c7dc; }
+html:not(.dark) .fi-page.srms-teacher-dashboard .fi-wi-stats-overview-stat-label { color: #59677b; }
+html:not(.dark) .fi-page.srms-teacher-dashboard .fi-wi-stats-overview-stat-value,
+html:not(.dark) .fi-page.srms-teacher-dashboard .fi-wi-stats-overview-stat-placeholder { color: #202b3b; }
+html:not(.dark) .fi-page.srms-teacher-dashboard .fi-wi-stats-overview-stat-description { color: #657286; }
+
+/* Chart panels remain dark so the Chart.js labels configured for dark mode retain AA contrast. */
+@media (max-width: 64rem) { html:not(.dark) .fi-page.srms-teacher-dashboard .fi-account-widget.fi-wi-widget { grid-column: 1 / -1 !important; } }

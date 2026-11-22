@@ -99,7 +99,7 @@ class AnalyticsService
             return ['labels' => [], 'data' => []];
         }
 
-        $levels = Cache::rememberForever('performance_levels.all', fn () => PerformanceLevel::query()->orderBy('order')->get());
+        $levels = PerformanceLevel::allCached();
         $counts = PerformanceSummary::query()
             ->where('grading_period_id', $period->id)
             ->get()
@@ -109,8 +109,10 @@ class AnalyticsService
         $data = [];
 
         foreach ($levels as $level) {
-            $labels[] = $level->name;
-            $data[] = isset($counts[$level->id]) ? $counts[$level->id]->count() : 0;
+            $levelName = is_object($level) ? ($level->name ?? '') : (is_array($level) ? ($level['name'] ?? '') : (string) $level);
+            $levelId = is_object($level) ? ($level->id ?? null) : (is_array($level) ? ($level['id'] ?? null) : null);
+            $labels[] = (string) $levelName;
+            $data[] = ($levelId !== null && isset($counts[$levelId])) ? $counts[$levelId]->count() : 0;
         }
 
         return [

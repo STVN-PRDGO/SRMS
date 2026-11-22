@@ -4,6 +4,7 @@ namespace App\Filament\Teacher\Widgets;
 
 use App\Services\AnalyticsService;
 use BezhanSalleh\FilamentShield\Traits\HasWidgetShield;
+use Filament\Support\Components\Attributes\Unexposed;
 use Filament\Widgets\ChartWidget;
 
 class TeacherClassPerformanceChartWidget extends ChartWidget
@@ -28,6 +29,42 @@ class TeacherClassPerformanceChartWidget extends ChartWidget
         return 'bar';
     }
 
+    protected function getOptions(): array
+    {
+        return [
+            'maintainAspectRatio' => false,
+            'plugins' => [
+                'legend' => [
+                    'labels' => [
+                        'color' => '#d8dee9',
+                        'usePointStyle' => true,
+                        'boxWidth' => 8,
+                        'padding' => 18,
+                    ],
+                ],
+                'tooltip' => [
+                    'backgroundColor' => '#111827',
+                    'titleColor' => '#f3f4f6',
+                    'bodyColor' => '#d1d5db',
+                    'borderColor' => '#374151',
+                    'borderWidth' => 1,
+                ],
+            ],
+            'scales' => [
+                'x' => [
+                    'ticks' => ['color' => '#aab2c0'],
+                    'grid' => ['display' => false],
+                ],
+                'y' => [
+                    'beginAtZero' => true,
+                    'max' => 100,
+                    'ticks' => ['color' => '#aab2c0'],
+                    'grid' => ['color' => 'rgba(148, 163, 184, 0.12)'],
+                ],
+            ],
+        ];
+    }
+
     protected function getData(): array
     {
         $comparison = app(AnalyticsService::class)->getTeacherClassComparison(auth()->user());
@@ -45,5 +82,17 @@ class TeacherClassPerformanceChartWidget extends ChartWidget
             ],
             'labels' => $comparison['labels'],
         ];
+    }
+
+    #[Unexposed]
+    public function getChartAssistiveContent(): string
+    {
+        $chartData = $this->getCachedData();
+        $values = $chartData['datasets'][0]['data'] ?? [];
+        $summary = collect($chartData['labels'] ?? [])
+            ->map(fn (string $label, int $index): string => $label.': '.number_format((float) ($values[$index] ?? 0), 2).'%')
+            ->implode('; ');
+
+        return 'Class averages by assigned subject and section: '.$summary;
     }
 }

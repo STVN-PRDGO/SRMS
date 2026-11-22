@@ -5,6 +5,7 @@ namespace App\Providers\Filament;
 use App\Filament\Shared\PanelDefaults;
 use App\Filament\Shared\WelcomeBanner;
 use App\Filament\Student\Pages\Dashboard;
+use App\Filament\Student\Pages\Profile as StudentProfile;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Navigation\MenuItem;
 use Filament\Panel;
@@ -35,17 +36,15 @@ class StudentPanelProvider extends PanelProvider
             ->widgets([WelcomeBanner::class])
             ->userMenuItems([
                 MenuItem::make()
+                    ->label('Profile')
+                    ->icon('heroicon-o-user-circle')
+                    ->url(fn (): string => StudentProfile::getUrl()),
+                MenuItem::make()
                     ->label('Back to Admin Panel')
                     ->icon('heroicon-o-arrow-uturn-left')
                     ->url(fn (): string => filament()->getPanel('admin')->getUrl())
                     ->visible(fn (): bool => (bool) auth()->user()?->can('access_admin_panel')),
             ])
-            ->renderHook(
-                PanelsRenderHook::BODY_START,
-                fn (): string => auth()->user()?->can('view_as_student')
-                    ? Blade::render('<div class="srms-banner bg-emerald-100 text-emerald-950">You are viewing the Student panel as Admin. <a href="{{ $url }}">Back to Admin</a></div>', ['url' => filament()->getPanel('admin')->getUrl()])
-                    : '',
-            )
             ->renderHook(
                 PanelsRenderHook::BODY_END,
                 fn (): string => Blade::render('@include("filament.shared.liquid-nav-script")'),

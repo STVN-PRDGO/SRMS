@@ -7,12 +7,12 @@
         <table class="w-full text-sm text-gray-700 dark:text-gray-200">
             <thead>
                 <tr class="border-b border-gray-200 dark:border-gray-800 bg-gray-50/75 dark:bg-gray-800/75">
-                    <th class="px-5 py-3 text-left font-semibold text-xs uppercase tracking-wider text-gray-600 dark:text-gray-400">Student</th>
-                    <th class="px-5 py-3 text-left font-semibold text-xs uppercase tracking-wider text-gray-600 dark:text-gray-400">Subject</th>
-                    <th class="px-5 py-3 text-left font-semibold text-xs uppercase tracking-wider text-gray-600 dark:text-gray-400">Period</th>
-                    <th class="px-5 py-3 text-left font-semibold text-xs uppercase tracking-wider text-gray-600 dark:text-gray-400">Raw Grade</th>
-                    <th class="px-5 py-3 text-left font-semibold text-xs uppercase tracking-wider text-gray-600 dark:text-gray-400">Scale Letter</th>
-                    <th class="px-5 py-3 text-left font-semibold text-xs uppercase tracking-wider text-gray-600 dark:text-gray-400">Remark</th>
+                    <th scope="col" class="px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-600 dark:text-gray-400">Student</th>
+                    <th scope="col" class="px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-600 dark:text-gray-400">Subject</th>
+                    <th scope="col" class="px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-600 dark:text-gray-400">Period</th>
+                    <th scope="col" class="px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-600 dark:text-gray-400">Raw Grade</th>
+                    <th scope="col" class="px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-600 dark:text-gray-400">Scale Letter</th>
+                    <th scope="col" class="px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-600 dark:text-gray-400">Remark</th>
                 </tr>
             </thead>
             <tbody class="divide-y divide-gray-100 dark:divide-gray-800">

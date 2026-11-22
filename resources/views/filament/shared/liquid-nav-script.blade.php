@@ -1,103 +1,114 @@
 <script data-navigate-once>
-(function() {
+(function () {
     function setupLiquidNav() {
         const navContainer = document.querySelector(':is(.fi-panel-teacher, .fi-panel-student) .fi-topbar-nav-groups');
-        if (!navContainer) return;
+        if (!navContainer) {
+            return;
+        }
 
         let glider = navContainer.querySelector('.srms-liquid-glider');
         if (!glider) {
             glider = document.createElement('div');
             glider.className = 'srms-liquid-glider';
             glider.setAttribute('aria-hidden', 'true');
-            navContainer.style.position = 'relative';
             navContainer.prepend(glider);
         }
 
         navContainer.classList.add('srms-has-glider');
 
         const items = Array.from(navContainer.querySelectorAll('.fi-topbar-item'));
-        if (items.length === 0) return;
-
-        function getActiveItem() {
-            return navContainer.querySelector('.fi-topbar-item.fi-active') || items[0];
+        if (items.length === 0) {
+            return;
         }
 
-        let isHovered = false;
+        function pathOf(url) {
+            try {
+                const path = new URL(url, window.location.origin).pathname.replace(/\/$/, '');
 
-        function moveTo(el, withAnimation = true) {
-            if (!el || !glider) return;
-            const containerRect = navContainer.getBoundingClientRect();
-            const elRect = el.getBoundingClientRect();
-
-            if (elRect.width === 0 || elRect.height === 0) return;
-
-            const left = elRect.left - containerRect.left;
-            const width = elRect.width;
-
-            if (!withAnimation) {
-                glider.style.transition = 'none';
-            } else {
-                glider.style.transition = '';
-            }
-
-            glider.style.transform = `translateX(${left}px)`;
-            glider.style.width = `${width}px`;
-            glider.style.opacity = '1';
-
-            if (!withAnimation) {
-                requestAnimationFrame(() => {
-                    glider.style.transition = '';
-                });
+                return path === '' ? '/' : path;
+            } catch (error) {
+                return '/';
             }
         }
 
-        // Position at active item on load/navigate
-        const active = getActiveItem();
-        moveTo(active, false);
+        function markActive() {
+            const current = pathOf(window.location.href);
+            let active = null;
+            let activeLength = -1;
 
-        // Bind hover and click events
-        items.forEach(item => {
-            if (item.dataset.liquidBound) return;
-            item.dataset.liquidBound = 'true';
+            items.forEach((item) => {
+                const link = item.querySelector('a[href]');
+                item.classList.remove('fi-active');
+                if (!link) {
+                    return;
+                }
 
-            item.addEventListener('mouseenter', () => {
-                isHovered = true;
-                moveTo(item, true);
-            });
+                const href = pathOf(link.href);
+                const matches = current === href || (href !== '/' && current.startsWith(href + '/'));
+                link.removeAttribute('aria-current');
 
-            item.addEventListener('mousedown', () => {
-                if (glider) {
-                    glider.style.transform += ' scaleY(0.92)';
+                if (matches && href.length > activeLength) {
+                    active = item;
+                    activeLength = href.length;
                 }
             });
 
-            item.addEventListener('mouseup', () => {
-                moveTo(item, true);
-            });
-        });
+            if (!active) {
+                active = items[0];
+            }
 
-        if (!navContainer.dataset.liquidBound) {
-            navContainer.dataset.liquidBound = 'true';
-            navContainer.addEventListener('mouseleave', () => {
-                isHovered = false;
-                moveTo(getActiveItem(), true);
-            });
+            active.classList.add('fi-active');
+            active.querySelector('a[href]')?.setAttribute('aria-current', 'page');
+
+            return active;
         }
+
+        function moveTo(el) {
+            if (!el || !glider) {
+                return;
+            }
+
+            const containerRect = navContainer.getBoundingClientRect();
+            const elRect = el.getBoundingClientRect();
+
+            if (elRect.width === 0 || elRect.height === 0) {
+                return;
+            }
+
+            glider.style.transform = `translateX(${elRect.left - containerRect.left}px)`;
+            glider.style.width = `${elRect.width}px`;
+            glider.style.opacity = '1';
+        }
+
+        moveTo(markActive());
+
+        if (navContainer.dataset.liquidBound === 'true') {
+            return;
+        }
+
+        navContainer.dataset.liquidBound = 'true';
+        navContainer.addEventListener('click', (event) => {
+            const item = event.target.closest('.fi-topbar-item');
+            if (!item || !navContainer.contains(item)) {
+                return;
+            }
+
+            items.forEach((entry) => entry.classList.remove('fi-active'));
+            item.classList.add('fi-active');
+            moveTo(item);
+        });
     }
 
-    // Initialize on initial page load
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', setupLiquidNav);
     } else {
         setupLiquidNav();
     }
 
-    // Initialize and smoothly animate when navigating via Filament SPA
     document.addEventListener('livewire:navigated', () => {
-        setTimeout(setupLiquidNav, 30);
+        requestAnimationFrame(setupLiquidNav);
     });
 
-    // Handle responsive resize
     window.addEventListener('resize', () => {
         setupLiquidNav();
     });

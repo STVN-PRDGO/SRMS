@@ -99,8 +99,7 @@ class GradeCalculator
      */
     private function componentsFor(int $subjectId): Collection
     {
-        /** @var Collection<int, GradingComponent> $all */
-        $all = cache()->rememberForever('grading_components.all', fn () => GradingComponent::all());
+        $all = GradingComponent::allCached();
         $own = $all->where('subject_id', $subjectId);
 
         if ($own->isNotEmpty()) {
@@ -112,8 +111,7 @@ class GradeCalculator
 
     private function scaleFor(float $grade): ?GradeScale
     {
-        /** @var Collection<int, GradeScale> $scales */
-        $scales = cache()->rememberForever('grade_scales.all', fn () => GradeScale::query()->orderByDesc('min_grade')->get());
+        $scales = GradeScale::allCached();
 
         return $scales->first(
             fn (GradeScale $scale) => $grade >= (float) $scale->min_grade && $grade <= (float) $scale->max_grade

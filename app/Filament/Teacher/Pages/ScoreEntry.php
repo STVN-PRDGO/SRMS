@@ -20,13 +20,13 @@ class ScoreEntry extends Page
 {
     use HasPageShield;
 
-    protected static ?string $navigationLabel = 'Enter Scores';
+    protected static ?string $navigationLabel = 'Scores';
 
-    protected static ?string $title = 'Enter Scores';
+    protected static ?string $title = 'Scores';
 
     protected static string|\BackedEnum|null $navigationIcon = Heroicon::OutlinedTableCells;
 
-    protected static ?int $navigationSort = 3;
+    protected static ?int $navigationSort = 4;
 
     public ?array $data = [];
 
@@ -42,22 +42,23 @@ class ScoreEntry extends Page
                 ->label('Activity')
                 ->options(fn (): array => Activity::query()
                     ->whereHas('classSubject', fn ($query) => $query->visibleTo(auth()->user()))
-                    ->with('classSubject.subject', 'gradingPeriod')
+                    ->with(['classSubject.section', 'classSubject.subject', 'gradingPeriod'])
                     ->get()
                     ->mapWithKeys(fn (Activity $activity): array => [
-                        $activity->id => $activity->title.' · '.$activity->classSubject->subject->name.' · '.$activity->gradingPeriod->name,
+                        $activity->id => $activity->title.' · '.$activity->classSubject->section->name.' · '.$activity->classSubject->subject->name.' · '.$activity->gradingPeriod->name,
                     ])
                     ->all())
                 ->live()
                 ->afterStateUpdated(fn (?string $state) => $this->loadRows($state))
                 ->helperText(function (?string $state): ?string {
                     if (! $state) {
-                        return null;
+                        return 'The grade and remark are computed from these scores.';
                     }
+
                     $activity = Activity::query()->with('gradingComponent')->find($state);
 
                     return $activity
-                        ? "Component: {$activity->gradingComponent?->name} | Max Score: {$activity->max_score} | Due: ".($activity->due_date?->format('M d, Y') ?? 'No due date')
+                        ? "Component: {$activity->gradingComponent?->name} | Max score: {$activity->max_score} | Due: ".($activity->due_date?->format('M d, Y') ?? 'No due date')
                         : null;
                 })
                 ->required(),
@@ -76,13 +77,10 @@ class ScoreEntry extends Page
                         ->label('Status')
                         ->options(ScoreStatus::class)
                         ->default(ScoreStatus::Graded),
-                    TextInput::make('remarks')
-                        ->label('Remarks')
-                        ->placeholder('Optional notes'),
                 ])
                 ->addable(false)
                 ->deletable(false)
-                ->columns(4),
+                ->columns(3),
         ])->statePath('data');
     }
 
@@ -94,14 +92,16 @@ class ScoreEntry extends Page
                 ->action(function (): void {
                     $activity = Activity::query()->findOrFail($this->data['activity_id'] ?? null);
                     app(SaveScores::class)($activity, $this->data['rows'] ?? [], auth()->user());
-                    Notification::make()->title('Scores saved')->success()->send();
+                    Notification::make()->title('Scores saved. Grades were recomputed.')->success()->send();
                 }),
         ];
     }
 
     public function loadRows(?string $activityId): void
     {
-        $activity = Activity::query()->with('classSubject.section.students.user', 'scores')->find($activityId);
+        $activity = Activity::query()
+            ->with('classSubject.section.students.user', 'scores')
+            ->find($activityId);
         $this->data['rows'] = [];
 
         if ($activity === null || ! $activity->classSubject->isManageableBy(auth()->user())) {
@@ -115,7 +115,6 @@ class ScoreEntry extends Page
                 'student_name' => $student->user->name.' ('.$student->student_no.')',
                 'score' => $score?->score,
                 'status' => $score?->status?->value ?? ScoreStatus::Graded->value,
-                'remarks' => $score?->remarks,
             ];
         }
     }

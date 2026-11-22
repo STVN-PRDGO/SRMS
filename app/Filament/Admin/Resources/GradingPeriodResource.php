@@ -5,6 +5,7 @@ namespace App\Filament\Admin\Resources;
 use App\Actions\Periods\ClosePeriod;
 use App\Actions\Periods\OpenPeriod;
 use App\Actions\Periods\ReopenPeriod;
+use App\Filament\Admin\AdminNavigationGroup;
 use App\Filament\Admin\Resources\GradingPeriodResource\Pages\ManageGradingPeriods;
 use App\Models\GradingPeriod;
 use BackedEnum;
@@ -27,19 +28,35 @@ class GradingPeriodResource extends Resource
 {
     protected static ?string $model = GradingPeriod::class;
 
+    protected static ?string $navigationLabel = 'Periods';
+
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedClock;
 
-    protected static string|\UnitEnum|null $navigationGroup = 'Academic Setup';
+    protected static string|\UnitEnum|null $navigationGroup = AdminNavigationGroup::School;
 
     protected static ?int $navigationSort = 2;
 
     public static function form(Schema $schema): Schema
     {
         return $schema->components([
-            Select::make('school_year_id')->relationship('schoolYear', 'name')->required(),
-            TextInput::make('name')->required(),
-            DatePicker::make('starts_on')->required(),
-            DatePicker::make('ends_on')->required(),
+            Select::make('school_year_id')
+                ->relationship('schoolYear', 'name')
+                ->required()
+                ->preload(),
+            TextInput::make('name')
+                ->label('Period Name')
+                ->placeholder('e.g. 1st Quarter, Midterm')
+                ->required()
+                ->maxLength(255),
+            DatePicker::make('starts_on')
+                ->label('Start Date')
+                ->native(false)
+                ->required(),
+            DatePicker::make('ends_on')
+                ->label('End Date')
+                ->native(false)
+                ->afterOrEqual('starts_on')
+                ->required(),
         ]);
     }
 
@@ -47,15 +64,18 @@ class GradingPeriodResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('schoolYear.name')->label('School year'),
-                TextColumn::make('name')->searchable(),
-                TextColumn::make('starts_on')->date(),
-                TextColumn::make('ends_on')->date(),
-                TextColumn::make('status')->badge(),
+                TextColumn::make('schoolYear.name')->label('School Year')->sortable(),
+                TextColumn::make('name')->label('Period')->searchable()->sortable(),
+                TextColumn::make('starts_on')->date()->sortable(),
+                TextColumn::make('ends_on')->date()->sortable(),
+                TextColumn::make('status')->badge()->sortable(),
             ])
+            ->defaultSort('starts_on', 'desc')
             ->recordActions([
                 EditAction::make(),
                 Action::make('open')
+                    ->icon('heroicon-m-lock-open')
+                    ->color('success')
                     ->authorize(fn (): bool => (bool) auth()->user()?->can('update_grading_period_admin'))
                     ->visible(fn (GradingPeriod $record): bool => $record->status->value === 'draft')
                     ->action(function (GradingPeriod $record): void {
@@ -63,6 +83,8 @@ class GradingPeriodResource extends Resource
                         Notification::make()->title('Period opened')->success()->send();
                     }),
                 Action::make('close')
+                    ->icon('heroicon-m-lock-closed')
+                    ->color('danger')
                     ->authorize('close_grading_period')
                     ->visible(fn (GradingPeriod $record): bool => $record->status->value === 'open')
                     ->requiresConfirmation()
@@ -71,8 +93,10 @@ class GradingPeriodResource extends Resource
                         Notification::make()->title('Period closed')->success()->send();
                     }),
                 Action::make('reopen')
+                    ->icon('heroicon-m-arrow-path')
+                    ->color('warning')
                     ->authorize('reopen_grading_period')
-                    ->visible(fn (GradingPeriod $record): bool => $record->isClosed())
+                    ->visible(fn (GradingPeriod $record): bool => $record->status->value === 'closed')
                     ->requiresConfirmation()
                     ->action(function (GradingPeriod $record): void {
                         app(ReopenPeriod::class)($record, auth()->user());
@@ -80,7 +104,10 @@ class GradingPeriodResource extends Resource
                     }),
                 DeleteAction::make(),
             ])
-            ->toolbarActions([BulkActionGroup::make([DeleteBulkAction::make()])]);
+            ->toolbarActions([BulkActionGroup::make([DeleteBulkAction::make()])])
+            ->emptyStateHeading('No grading periods')
+            ->emptyStateDescription('Create quarters or semesters for the active school year.')
+            ->emptyStateIcon('heroicon-o-clock');
     }
 
     public static function getPages(): array

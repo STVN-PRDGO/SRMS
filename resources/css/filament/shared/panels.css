@@ -1,21 +1,145 @@
-.fi-topbar .fi-logo {
+:is(.fi-panel-admin, .fi-panel-teacher, .fi-panel-student) {
+    --srms-page: #f4f6f9;
+    --srms-surface: #fff;
+    --srms-surface-raised: #fff;
+    --srms-surface-muted: #f7f8fb;
+    --srms-line: #e1e6ee;
+    --srms-ink: #202b3b;
+    --srms-muted: #647187;
+    --srms-focus: #315fcb;
+}
+
+html.dark :is(.fi-panel-admin, .fi-panel-teacher, .fi-panel-student) {
+    --srms-page: #0b111b;
+    --srms-surface: #111a27;
+    --srms-surface-raised: #172231;
+    --srms-surface-muted: #0e1723;
+    --srms-line: #2a3545;
+    --srms-ink: #e8edf5;
+    --srms-muted: #a2aec0;
+    --srms-focus: #8eafff;
+}
+
+:is(.fi-panel-admin, .fi-panel-teacher, .fi-panel-student) {
+    --srms-focus: #315fcb;
+}
+
+.fi-panel-admin { --srms-focus: #966200; }
+.fi-panel-student { --srms-focus: #13785a; }
+html.dark .fi-panel-admin { --srms-focus: #f0c15f; }
+html.dark .fi-panel-student { --srms-focus: #54c49b; }
+
+:is(.fi-panel-admin, .fi-panel-teacher, .fi-panel-student) .fi-topbar .fi-logo {
     @apply font-semibold tracking-tight;
+    color: var(--srms-ink);
 }
 
-.fi-page-header-heading {
-    letter-spacing: -0.025em;
+:is(.fi-panel-admin, .fi-panel-teacher, .fi-panel-student) .fi-main-ctn,
+:is(.fi-panel-admin, .fi-panel-teacher, .fi-panel-student) .fi-main {
+    background:
+        radial-gradient(ellipse at 92% 0%, color-mix(in srgb, var(--srms-focus) 5%, transparent), transparent 34rem),
+        var(--srms-page);
 }
 
-.fi-wi-stats-overview-stat {
-    border-radius: 1rem;
+:is(.fi-panel-admin, .fi-panel-teacher, .fi-panel-student) .fi-page {
+    gap: 1.15rem;
+    color: var(--srms-ink);
 }
 
-.srms-banner,
-.eductrack-banner {
+:is(.fi-panel-admin, .fi-panel-teacher, .fi-panel-student) .fi-page-header-heading {
+    color: var(--srms-ink);
+    font-size: clamp(1.35rem, 2vw, 1.8rem);
+    font-weight: 700;
+    letter-spacing: -0.035em;
+}
+
+:is(.fi-panel-admin, .fi-panel-teacher, .fi-panel-student) .fi-page-header-subheading {
+    color: var(--srms-muted);
+}
+
+:is(.fi-panel-admin, .fi-panel-teacher, .fi-panel-student) .fi-section,
+:is(.fi-panel-admin, .fi-panel-teacher, .fi-panel-student) .fi-ta-ctn {
+    border: 1px solid var(--srms-line);
+    border-radius: 0.9rem;
+    background: var(--srms-surface);
+    box-shadow: 0 8px 24px -22px rgb(15 23 42 / 35%);
+}
+
+:is(.fi-panel-admin, .fi-panel-teacher, .fi-panel-student) .fi-section-header {
+    border-color: var(--srms-line);
+}
+
+:is(.fi-panel-admin, .fi-panel-teacher, .fi-panel-student) :is(.fi-section-heading, .fi-ta-header-heading) {
+    color: var(--srms-ink);
+}
+
+:is(.fi-panel-admin, .fi-panel-teacher, .fi-panel-student) :is(.fi-section-description, .fi-ta-header-description) {
+    color: var(--srms-muted);
+}
+
+:is(.fi-panel-admin, .fi-panel-teacher, .fi-panel-student) .fi-wi-stats-overview-stat {
+    min-width: 0;
+    border: 1px solid var(--srms-line);
+    border-radius: 0.9rem;
+    background: var(--srms-surface-raised);
+    box-shadow: 0 8px 24px -22px rgb(15 23 42 / 35%);
+    transition: transform 180ms cubic-bezier(0.16, 1, 0.3, 1), border-color 180ms ease, box-shadow 180ms ease;
+}
+
+:is(.fi-panel-admin, .fi-panel-teacher, .fi-panel-student) .fi-wi-stats-overview-stat-label,
+:is(.fi-panel-admin, .fi-panel-teacher, .fi-panel-student) .fi-wi-stats-overview-stat-description {
+    color: var(--srms-muted);
+}
+
+:is(.fi-panel-admin, .fi-panel-teacher, .fi-panel-student) .fi-wi-stats-overview-stat-value {
+    color: var(--srms-ink);
+    font-variant-numeric: tabular-nums;
+}
+
+:is(.fi-panel-admin, .fi-panel-teacher, .fi-panel-student) .fi-ta-header-cell {
+    background: var(--srms-surface-muted);
+    color: var(--srms-muted);
+}
+
+:is(.fi-panel-admin, .fi-panel-teacher, .fi-panel-student) .fi-ta-row:hover {
+    background: var(--srms-surface-muted);
+}
+
+:is(.fi-panel-admin, .fi-panel-teacher, .fi-panel-student) :is(.fi-btn, .fi-input-wrp, .fi-select-input, .fi-fo-field-wrp) {
+    transition: border-color 160ms ease, box-shadow 160ms ease, background-color 160ms ease;
+}
+
+:is(.fi-panel-admin, .fi-panel-teacher, .fi-panel-student) :is(a, button, input, select, textarea, [tabindex]):focus-visible {
+    outline: 2px solid var(--srms-focus);
+    outline-offset: 2px;
+}
+
+.srms-banner {
     @apply flex items-center justify-center gap-3 px-4 py-2 text-center text-sm;
 }
 
-.srms-banner a,
-.eductrack-banner a {
+.srms-banner a {
     @apply font-semibold underline underline-offset-2;
+}
+
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+    :is(.fi-panel-admin, .fi-panel-teacher, .fi-panel-student) .fi-wi-stats-overview-stat:hover {
+        transform: translateY(-1px);
+        border-color: color-mix(in srgb, var(--srms-focus) 35%, var(--srms-line));
+        box-shadow: 0 12px 28px -22px rgb(15 23 42 / 42%);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    :is(.fi-panel-admin, .fi-panel-teacher, .fi-panel-student) .fi-wi-stats-overview-stat {
+        transition: none;
+    }
+}
+
+@media (forced-colors: active) {
+    :is(.fi-panel-admin, .fi-panel-teacher, .fi-panel-student) .fi-section,
+    :is(.fi-panel-admin, .fi-panel-teacher, .fi-panel-student) .fi-ta-ctn,
+    :is(.fi-panel-admin, .fi-panel-teacher, .fi-panel-student) .fi-wi-stats-overview-stat {
+        border: 1px solid CanvasText;
+    }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Filament\Admin\Resources;
 
+use App\Filament\Admin\AdminNavigationGroup;
 use App\Filament\Admin\Resources\ClassSubjectResource\Pages\ManageClassSubjects;
 use App\Models\ClassSubject;
 use BackedEnum;
@@ -20,20 +21,33 @@ class ClassSubjectResource extends Resource
 {
     protected static ?string $model = ClassSubject::class;
 
-    protected static ?string $navigationLabel = 'Class Subjects';
+    protected static ?string $navigationLabel = 'Classes';
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleGroup;
 
-    protected static string|\UnitEnum|null $navigationGroup = 'Academic Setup';
+    protected static string|\UnitEnum|null $navigationGroup = AdminNavigationGroup::Classes;
 
-    protected static ?int $navigationSort = 6;
+    protected static ?int $navigationSort = 2;
 
     public static function form(Schema $schema): Schema
     {
         return $schema->components([
-            Select::make('section_id')->relationship('section', 'name')->required()->searchable()->preload(),
-            Select::make('subject_id')->relationship('subject', 'name')->required()->searchable()->preload(),
-            Select::make('teacher_id')->relationship('teacher', 'employee_no')->required()->searchable()->preload(),
+            Select::make('section_id')
+                ->relationship('section', 'name')
+                ->required()
+                ->searchable()
+                ->preload(),
+            Select::make('subject_id')
+                ->relationship('subject', 'name')
+                ->required()
+                ->searchable()
+                ->preload(),
+            Select::make('teacher_id')
+                ->relationship('teacher', 'employee_no', fn ($query) => $query->with('user'))
+                ->getOptionLabelFromRecordUsing(fn ($record) => $record->employee_no.($record->user ? ' ('.$record->user->name.')' : ''))
+                ->required()
+                ->searchable()
+                ->preload(),
         ]);
     }
 
@@ -41,12 +55,17 @@ class ClassSubjectResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('section.name')->label('Section'),
-                TextColumn::make('subject.name')->label('Subject'),
-                TextColumn::make('teacher.employee_no')->label('Teacher'),
+                TextColumn::make('section.name')->label('Section')->searchable()->sortable(),
+                TextColumn::make('subject.name')->label('Subject')->searchable()->sortable(),
+                TextColumn::make('teacher.user.name')->label('Teacher')->searchable()->sortable(),
+                TextColumn::make('teacher.employee_no')->label('Employee No')->toggleable(isToggledHiddenByDefault: true),
+                TextColumn::make('activities_count')->counts('activities')->label('Activities')->sortable(),
             ])
             ->recordActions([EditAction::make(), DeleteAction::make()])
-            ->toolbarActions([BulkActionGroup::make([DeleteBulkAction::make()])]);
+            ->toolbarActions([BulkActionGroup::make([DeleteBulkAction::make()])])
+            ->emptyStateHeading('No class subjects assigned')
+            ->emptyStateDescription('Assign subjects and teachers to class sections.')
+            ->emptyStateIcon('heroicon-o-rectangle-group');
     }
 
     public static function getPages(): array

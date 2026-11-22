@@ -2,6 +2,7 @@
 
 namespace App\Filament\Admin\Pages;
 
+use App\Filament\Admin\AdminNavigationGroup;
 use App\Models\PerformanceLevel;
 use App\Models\PerformanceSummary;
 use BezhanSalleh\FilamentShield\Traits\HasPageShield;
@@ -16,7 +17,9 @@ class HonorList extends Page
 
     protected static ?string $navigationLabel = 'Honor List';
 
-    protected static string|\UnitEnum|null $navigationGroup = 'Reports';
+    protected static string|\UnitEnum|null $navigationGroup = AdminNavigationGroup::Reports;
+
+    protected static ?int $navigationSort = 2;
 
     protected static string|\BackedEnum|null $navigationIcon = Heroicon::OutlinedStar;
 

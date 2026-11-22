@@ -6,12 +6,12 @@
         <table class="w-full text-sm text-gray-700 dark:text-gray-200">
             <thead>
                 <tr class="border-b border-gray-200 dark:border-gray-800 bg-gray-50/75 dark:bg-gray-800/75">
-                    <th class="px-5 py-3 text-left font-semibold text-xs uppercase tracking-wider text-gray-600 dark:text-gray-400">Period</th>
-                    <th class="px-5 py-3 text-left font-semibold text-xs uppercase tracking-wider text-gray-600 dark:text-gray-400">General Average</th>
-                    <th class="px-5 py-3 text-left font-semibold text-xs uppercase tracking-wider text-gray-600 dark:text-gray-400">Attendance</th>
-                    <th class="px-5 py-3 text-left font-semibold text-xs uppercase tracking-wider text-gray-600 dark:text-gray-400">Completion</th>
-                    <th class="px-5 py-3 text-left font-semibold text-xs uppercase tracking-wider text-gray-600 dark:text-gray-400">Performance Level</th>
-                    <th class="px-5 py-3 text-left font-semibold text-xs uppercase tracking-wider text-gray-600 dark:text-gray-400">Trend</th>
+                    <th scope="col" class="px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-600 dark:text-gray-400">Period</th>
+                    <th scope="col" class="px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-600 dark:text-gray-400">General Average</th>
+                    <th scope="col" class="px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-600 dark:text-gray-400">Attendance</th>
+                    <th scope="col" class="px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-600 dark:text-gray-400">Completion</th>
+                    <th scope="col" class="px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-600 dark:text-gray-400">Performance Level</th>
+                    <th scope="col" class="px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-600 dark:text-gray-400">Trend</th>
                 </tr>
             </thead>
             <tbody class="divide-y divide-gray-100 dark:divide-gray-800">

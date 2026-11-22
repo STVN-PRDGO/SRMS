@@ -6,5 +6,5 @@ use App\Filament\Shared\Pages\AccountProfile;
 
 class Profile extends AccountProfile
 {
-    protected static ?int $navigationSort = 6;
+    protected static bool $shouldRegisterNavigation = false;
 }

@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 
 class ClassSubject extends Model
 {
@@ -67,5 +68,10 @@ class ClassSubject extends Model
     public function grades(): HasMany
     {
         return $this->hasMany(Grade::class);
+    }
+
+    public function students(): HasManyThrough
+    {
+        return $this->hasManyThrough(Student::class, Section::class, 'id', 'section_id', 'section_id', 'id');
     }
 }

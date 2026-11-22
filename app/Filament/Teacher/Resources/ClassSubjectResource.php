@@ -38,20 +38,26 @@ class ClassSubjectResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('section.name')->label('Section'),
-                TextColumn::make('subject.name')->label('Subject'),
-                TextColumn::make('section.students_count')->label('Students'),
+                TextColumn::make('section.name')->label('Section')->searchable()->sortable()->weight('bold'),
+                TextColumn::make('subject.name')->label('Subject')->searchable()->sortable(),
+                TextColumn::make('section.students_count')->label('Enrolled Students')->default(0),
+                TextColumn::make('activities_count')->counts('activities')->label('Activities')->sortable(),
             ])
             ->recordActions([
                 Action::make('export')
-                    ->label('Export')
+                    ->label('Export Sheet')
+                    ->icon('heroicon-m-arrow-down-tray')
+                    ->color('primary')
                     ->visible(fn (): bool => (bool) auth()->user()?->can('export_class_record'))
                     ->action(function (ClassSubject $record): BinaryFileResponse {
                         $path = app(ExportClassRecord::class)($record, auth()->user());
 
                         return response()->download($path)->deleteFileAfterSend();
                     }),
-            ]);
+            ])
+            ->emptyStateHeading('No classes assigned')
+            ->emptyStateDescription('Classes assigned to you by the administrator will appear here.')
+            ->emptyStateIcon('heroicon-o-rectangle-group');
     }
 
     public static function getPages(): array

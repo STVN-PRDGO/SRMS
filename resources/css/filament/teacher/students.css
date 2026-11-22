@@ -1,0 +1,174 @@
+.fi-panel-teacher:has(.fi-page.srms-teacher-students) {
+    --directory-ink: #202b3b;
+    --directory-muted: #64748b;
+    --directory-line: #dce3ec;
+    --directory-surface: #fff;
+    --directory-soft: #f5f7fa;
+    background: #f4f6f8;
+}
+
+.fi-panel-teacher:has(.fi-page.srms-teacher-students) .fi-main-ctn,
+.fi-panel-teacher:has(.fi-page.srms-teacher-students) .fi-main {
+    background: radial-gradient(ellipse at 92% 0%, rgb(16 121 105 / 7%), transparent 34rem), #f4f6f8;
+}
+
+.fi-panel-teacher:has(.fi-page.srms-teacher-students) .fi-topbar {
+    border-color: #e4e8ef !important;
+    background: linear-gradient(110deg, #fff 0 72%, #f8edf1 100%) !important;
+}
+
+.fi-panel-teacher:has(.fi-page.srms-teacher-students) .fi-topbar-item.fi-active .fi-topbar-item-btn,
+.fi-panel-teacher:has(.fi-page.srms-teacher-students) .fi-topbar-nav-groups:not(.srms-has-glider) .fi-topbar-item.fi-active .fi-topbar-item-btn {
+    border-color: #b82550 !important;
+    background: linear-gradient(135deg, #a91443, #74132f) !important;
+    color: #fff !important;
+    box-shadow: 0 4px 16px rgb(136 19 55 / 19%) !important;
+}
+
+.fi-panel-teacher:has(.fi-page.srms-teacher-students) .srms-liquid-glider,
+.fi-panel-teacher:has(.srms-record) .srms-liquid-glider {
+    border-color: #bd2853 !important;
+    background: linear-gradient(135deg, #a91443, #74132f) !important;
+    box-shadow: 0 4px 16px rgb(136 19 55 / 22%), inset 0 1px rgb(255 255 255 / 24%) !important;
+}
+
+.fi-panel-teacher:has(.fi-page.srms-teacher-students) .fi-topbar-item.fi-active .fi-topbar-item-btn > .fi-icon,
+.fi-panel-teacher:has(.fi-page.srms-teacher-students) .fi-topbar-item.fi-active .fi-topbar-item-label,
+.fi-panel-teacher:has(.srms-record) .fi-topbar-item.fi-active .fi-topbar-item-btn > .fi-icon,
+.fi-panel-teacher:has(.srms-record) .fi-topbar-item.fi-active .fi-topbar-item-label {
+    color: #fff !important;
+}
+
+.fi-page.srms-teacher-students {
+    gap: 1rem;
+    color: var(--directory-ink);
+}
+
+.fi-page.srms-teacher-students > .fi-page-header-main-ctn > .fi-header {
+    display: none;
+}
+
+.fi-page.srms-teacher-students .fi-page-content {
+    padding: 0;
+}
+
+.srms-directory {
+    --srms-ink: var(--directory-ink);
+    --srms-muted: var(--directory-muted);
+    --srms-line: var(--directory-line);
+    --srms-surface: var(--directory-surface);
+    --srms-soft: var(--directory-soft);
+    gap: 1rem;
+    color: var(--srms-ink);
+}
+
+.srms-directory-hero {
+    position: relative;
+    display: flex;
+    min-height: 8.25rem;
+    align-items: center;
+    overflow: hidden;
+    border: 1px solid #d8dee7;
+    border-radius: 1rem;
+    background: linear-gradient(110deg, #fff 0%, #f4f7fa 66%, #e9f2f0 100%);
+    padding: clamp(1.25rem, 3vw, 2rem);
+}
+
+.srms-directory-hero-copy { position: relative; z-index: 1; }
+.srms-directory-hero .srms-eyebrow { color: #8e2447; }
+.srms-directory-hero h1 { margin: .2rem 0; color: #202b3b; font-size: clamp(1.65rem, 3vw, 2.25rem); font-weight: 750; letter-spacing: -.045em; }
+.srms-directory-hero-copy > p:last-child { margin: 0; color: #526175; }
+
+.srms-directory-decoration {
+    position: absolute;
+    inset: 0 0 0 auto;
+    width: min(46%, 32rem);
+    background: linear-gradient(130deg, transparent 0 42%, rgb(12 115 99 / 9%) 42% 47%, transparent 47% 70%, rgb(156 18 62 / 12%) 70% 77%, transparent 77%), radial-gradient(ellipse at 80% 110%, rgb(10 109 87 / 13%), transparent 65%);
+    pointer-events: none;
+}
+
+.srms-directory-search {
+    border: 1px solid var(--srms-line);
+    border-radius: .9rem;
+    background: var(--srms-surface);
+    box-shadow: 0 8px 24px -22px rgb(15 23 42 / 35%);
+    padding: .85rem 1rem;
+}
+
+.srms-directory-search fieldset { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: end; gap: .5rem 1rem; border: 0; padding: 0; }
+.srms-directory-search legend { margin-block-end: .45rem; color: var(--srms-ink); font-size: .875rem; font-weight: 700; }
+.srms-directory-search .srms-field { margin: 0; gap: .35rem; }
+.srms-directory-search label { color: var(--srms-muted); font-size: .75rem; }
+.srms-directory-search input { width: 100%; min-height: 2.8rem; border-color: var(--srms-line); border-radius: .7rem; background: var(--srms-soft); color: var(--srms-ink); }
+.srms-directory-search input::placeholder { color: var(--srms-muted); opacity: .9; }
+.srms-directory-search button { min-height: 2.8rem; border-radius: .7rem; background: linear-gradient(135deg, #a91443, #74132f); box-shadow: 0 4px 12px rgb(136 19 55 / 16%); }
+.srms-directory-search button:hover { background: #68122c; }
+
+.srms-student-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: .85rem; }
+.srms-student-link:focus-visible { border-radius: .9rem; outline-color: #a91443; }
+.srms-student-card { position: relative; grid-template-rows: auto 1fr auto auto; gap: .85rem; min-height: 13.75rem; overflow: hidden; border-color: var(--srms-line); border-radius: .9rem; background: var(--srms-surface); box-shadow: 0 8px 22px -20px rgb(15 23 42 / 45%); padding: .95rem; transition: transform 180ms cubic-bezier(.16, 1, .3, 1), border-color 180ms ease, box-shadow 180ms ease; }
+.srms-student-card::before { position: absolute; inset: 0 auto 0 0; width: 4px; background: linear-gradient(#a91443, #0d8c71); content: ''; }
+.srms-student-link:hover .srms-student-card { transform: translateY(-2px); border-color: #b8c5d5; box-shadow: 0 14px 28px -20px rgb(15 23 42 / 32%); }
+.srms-student-card header { min-width: 0; gap: .7rem; }
+.srms-student-card .srms-initials { flex: none; width: 3.1rem; height: 3.1rem; border: 2px solid rgb(169 20 67 / 28%); background: linear-gradient(145deg, #fbeaf0, #e8effb); color: #6f1532; font-size: 1.05rem; box-shadow: 0 0 0 3px rgb(169 20 67 / 7%); }
+.srms-student-identity { min-width: 0; }
+.srms-student-identity h2 { margin: .35rem 0 0; color: var(--srms-ink); font-size: .95rem; line-height: 1.25; }
+.srms-student-identity .srms-status { display: inline-flex; align-items: center; gap: .3rem; border: 1px solid #b8e6cd; background: #eaf7ef; color: #176b3d; padding: .18rem .5rem; font-size: .63rem; }
+.srms-student-identity .srms-status:not(.is-active) { border-color: #e9d5a9; background: #fff5df; color: #82540b; }
+.srms-status.is-active > span { width: .4rem; height: .4rem; border-radius: 50%; background: #18a05d; }
+.srms-card-arrow { margin-inline-start: auto; color: var(--srms-muted); }
+.srms-student-card dl { gap: .5rem; padding-inline-start: .25rem; }
+.srms-student-card dt, .srms-student-subjects > span { color: var(--srms-muted); font-size: .65rem; }
+.srms-student-card dd { overflow-wrap: anywhere; color: var(--srms-ink); font-size: .74rem; font-weight: 600; }
+.srms-student-subjects { border-top: 1px solid var(--srms-line); padding: .55rem .25rem 0; }
+.srms-student-subjects p { display: flex; flex-wrap: wrap; align-items: center; gap: .3rem; margin: .25rem 0 0; color: var(--srms-ink); font-size: .7rem; }
+.srms-subject-more { color: #8e2447; font-weight: 700; }
+.srms-card-action { display: flex; justify-content: space-between; align-items: center; border: 1px solid var(--srms-line); border-radius: 999px; color: var(--srms-ink); padding: .38rem .65rem; font-size: .68rem; font-weight: 650; }
+.srms-student-link:hover .srms-card-action { border-color: #c78097; color: #8e173d; }
+.srms-directory-footer { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: .75rem; color: var(--srms-muted); font-size: .75rem; }
+.srms-directory-footer > p { margin: 0; }
+.srms-directory-footer nav { margin-inline-start: auto; }
+.srms-directory-footer nav > div:first-child { display: none; }
+.srms-directory-footer nav > div:last-child { gap: .25rem; }
+.srms-directory-footer nav a, .srms-directory-footer nav span[aria-current="page"] span, .srms-directory-footer nav span[aria-disabled="true"] span { display: grid; min-width: 2.3rem; min-height: 2.3rem; place-items: center; border: 1px solid var(--srms-line); border-radius: .65rem; background: var(--srms-surface); color: var(--srms-ink); text-decoration: none; }
+.srms-directory-footer nav span[aria-current="page"] span { border-color: #a91443; background: #a91443; color: #fff; }
+.srms-directory :focus-visible { outline: 2px solid #a91443; outline-offset: 2px; }
+
+html.dark .fi-panel-teacher:has(.fi-page.srms-teacher-students) {
+    --directory-ink: #edf1f7;
+    --directory-muted: #a2adbd;
+    --directory-line: #2a3444;
+    --directory-surface: #111925;
+    --directory-soft: #0c1420;
+    background: #080e17;
+}
+
+html.dark .fi-panel-teacher:has(.fi-page.srms-teacher-students) .fi-main-ctn,
+html.dark .fi-panel-teacher:has(.fi-page.srms-teacher-students) .fi-main { background: radial-gradient(ellipse at 85% 0%, rgb(14 102 91 / 15%), transparent 36rem), #080e17; }
+html.dark .fi-panel-teacher:has(.fi-page.srms-teacher-students) .fi-topbar { border-color: #243043 !important; background: linear-gradient(110deg, #130e1a 0 35%, #0c1523 70%, #071b1b 100%) !important; color: #edf1f7; }
+html.dark .fi-panel-teacher:has(.fi-page.srms-teacher-students) .srms-liquid-glider,
+html.dark .fi-panel-teacher:has(.srms-record) .srms-liquid-glider { border-color: #bd2853 !important; background: linear-gradient(135deg, #a91443, #74132f) !important; }
+html.dark .srms-directory-hero { border-color: #283348; background: linear-gradient(110deg, #101a2a, #0c1522 62%, #0a2425); }
+html.dark .srms-directory-hero .srms-eyebrow { color: #e78ba9; }
+html.dark .srms-directory-hero h1 { color: #f2f5f9; }
+html.dark .srms-directory-hero-copy > p:last-child { color: #b1bdce; }
+html.dark .srms-directory-decoration { background: linear-gradient(130deg, transparent 0 42%, rgb(12 151 129 / 15%) 42% 47%, transparent 47% 70%, rgb(183 25 70 / 24%) 70% 77%, transparent 77%), radial-gradient(ellipse at 80% 110%, rgb(10 109 87 / 18%), transparent 65%); }
+html.dark .srms-student-card { box-shadow: inset 0 1px rgb(255 255 255 / 3%), 0 12px 30px -26px #000; }
+html.dark .srms-student-card::before { background: linear-gradient(#d2245b, #00a77b); }
+html.dark .srms-student-card .srms-initials { border-color: #713148; background: linear-gradient(145deg, #3b1a2a, #182c48); color: #ffe7ef; box-shadow: 0 0 0 3px rgb(198 32 78 / 12%); }
+html.dark .srms-student-identity .srms-status { border-color: #14583f; background: #123729; color: #8de0b4; }
+html.dark .srms-student-identity .srms-status:not(.is-active) { border-color: #70521f; background: #382c18; color: #f2cb79; }
+html.dark .srms-subject-more { color: #f092ad; }
+html.dark .srms-student-link:hover .srms-card-action { border-color: #8f3d58; color: #ffb3c8; }
+
+@media (max-width: 70rem) { .srms-student-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (max-width: 52rem) { .srms-student-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 38rem) {
+    .srms-directory-search fieldset { grid-template-columns: minmax(0, 1fr); }
+    .srms-directory-search button { width: 100%; }
+    .srms-student-grid { grid-template-columns: minmax(0, 1fr); }
+    .srms-directory-footer { align-items: flex-start; }
+    .srms-directory-footer nav { margin-inline-start: 0; }
+}
+@media (prefers-reduced-motion: reduce) { .srms-student-card { transition: none; } }
+@media (forced-colors: active) { .srms-student-card, .srms-directory-hero, .srms-directory-search { border: 1px solid CanvasText; } }

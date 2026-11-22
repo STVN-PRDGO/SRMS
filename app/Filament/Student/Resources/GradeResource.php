@@ -48,33 +48,44 @@ class GradeResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('gradingPeriod.name')->label('Period'),
-                TextColumn::make('classSubject.subject.name')->label('Subject'),
-                TextColumn::make('raw_grade')->label('Grade'),
-                TextColumn::make('letter'),
-                TextColumn::make('remark'),
+                TextColumn::make('gradingPeriod.name')->label('Quarter / Period')->sortable(),
+                TextColumn::make('classSubject.subject.name')->label('Subject')->sortable()->weight('bold'),
+                TextColumn::make('raw_grade')->label('Grade')->numeric(decimalPlaces: 2)->sortable(),
+                TextColumn::make('letter')->label('Letter')->badge()->sortable(),
+                TextColumn::make('remark')->label('Remarks')->sortable(),
             ])
             ->headerActions([
                 Action::make('reportCard')
-                    ->label('Download report card')
+                    ->label('Download Report Card')
+                    ->icon('heroicon-m-arrow-down-tray')
+                    ->color('primary')
                     ->visible(fn (): bool => (bool) auth()->user()?->can('download_report_card'))
                     ->schema([
                         Select::make('grading_period_id')
-                            ->options(fn () => GradingPeriod::query()->where('status', 'closed')->pluck('name', 'id'))
+                            ->label('Grading Period')
+                            ->options(fn () => GradingPeriod::query()->pluck('name', 'id'))
                             ->required(),
                     ])
                     ->action(function (array $data) {
-                        $period = GradingPeriod::query()->findOrFail($data['grading_period_id']);
-                        abort_unless($period->isClosed(), 403);
-                        $student = Student::query()->findOrFail(StudentContext::id());
-                        $html = app(ReportCardService::class)->html($student, $period);
+                        $student = Student::query()->find(StudentContext::id());
+                        $period = GradingPeriod::query()->findOrFail((int) $data['grading_period_id']);
 
-                        return Response::make($html, 200, [
-                            'Content-Type' => 'text/html; charset=UTF-8',
-                            'Content-Disposition' => 'attachment; filename="report-card.html"',
-                        ]);
+                        if ($student === null) {
+                            abort(403);
+                        }
+
+                        $pdf = app(ReportCardService::class)->generate($student, $period);
+
+                        return Response::streamDownload(
+                            fn () => print ($pdf),
+                            "report-card-{$student->student_no}-{$period->name}.html",
+                            ['Content-Type' => 'text/html']
+                        );
                     }),
-            ]);
+            ])
+            ->emptyStateHeading('No grades recorded yet')
+            ->emptyStateDescription('Grades will be published once teacher assessments are finalized.')
+            ->emptyStateIcon('heroicon-o-academic-cap');
     }
 
     public static function getPages(): array

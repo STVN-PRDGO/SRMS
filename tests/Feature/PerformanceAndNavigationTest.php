@@ -3,8 +3,14 @@
 namespace Tests\Feature;
 
 use App\Actions\Scores\SaveScores;
+use App\Filament\Admin\AdminNavigationGroup;
+use App\Filament\Admin\Resources\ClassSubjectResource;
+use App\Filament\Admin\Resources\StudentResource;
+use App\Filament\Admin\Resources\UserResource;
 use App\Filament\Admin\Widgets\AdminOverviewStatsWidget;
+use App\Filament\Student\Pages\Profile as StudentProfile;
 use App\Filament\Student\Widgets\StudentOverviewStatsWidget;
+use App\Filament\Teacher\Resources\ScoreResource;
 use App\Filament\Teacher\Widgets\TeacherOverviewStatsWidget;
 use App\Jobs\RecalculateStudentGradeJob;
 use App\Models\GradeScale;
@@ -40,6 +46,17 @@ class PerformanceAndNavigationTest extends TestCase
         $this->assertTrue(Model::preventsLazyLoading());
     }
 
+    public function test_navigation_is_grouped_around_daily_tasks(): void
+    {
+        $this->assertSame(AdminNavigationGroup::People, StudentResource::getNavigationGroup());
+        $this->assertSame(AdminNavigationGroup::Classes, ClassSubjectResource::getNavigationGroup());
+        $this->assertSame(AdminNavigationGroup::Access, UserResource::getNavigationGroup());
+        $this->assertSame('Accounts', UserResource::getNavigationLabel());
+        $this->assertSame('Classes', ClassSubjectResource::getNavigationLabel());
+        $this->assertFalse(ScoreResource::shouldRegisterNavigation());
+        $this->assertFalse(StudentProfile::shouldRegisterNavigation());
+    }
+
     public function test_student_panel_has_global_search_disabled(): void
     {
         $studentPanel = Filament::getPanel('student');
@@ -71,9 +88,10 @@ class PerformanceAndNavigationTest extends TestCase
         $scale = GradeScale::query()->first();
         $this->assertNotNull($scale);
 
-        // Fetching through GradeCalculator or cache populates it
-        $cached = Cache::rememberForever('grade_scales.all', fn () => GradeScale::query()->orderByDesc('min_grade')->get());
+        // Fetching populates it
+        $cachedScales = GradeScale::allCached();
         $this->assertTrue(Cache::has('grade_scales.all'));
+        $this->assertNotEmpty($cachedScales);
 
         // Updating model invalidates cache
         $scale->update(['remark' => 'Updated Remark']);
@@ -84,8 +102,9 @@ class PerformanceAndNavigationTest extends TestCase
         $level = PerformanceLevel::query()->first();
         $this->assertNotNull($level);
 
-        Cache::rememberForever('performance_levels.all', fn () => PerformanceLevel::query()->orderBy('order')->get());
+        $cachedLevels = PerformanceLevel::allCached();
         $this->assertTrue(Cache::has('performance_levels.all'));
+        $this->assertNotEmpty($cachedLevels);
 
         $level->update(['name' => 'Updated Name']);
         $this->assertFalse(Cache::has('performance_levels.all'));
@@ -94,8 +113,9 @@ class PerformanceAndNavigationTest extends TestCase
         $this->assertFalse(Cache::has('grading_components.all'));
         $component = GradingComponent::query()->first();
         if ($component) {
-            Cache::rememberForever('grading_components.all', fn () => GradingComponent::all());
+            $cachedComponents = GradingComponent::allCached();
             $this->assertTrue(Cache::has('grading_components.all'));
+            $this->assertNotEmpty($cachedComponents);
 
             $component->update(['name' => 'Updated Component']);
             $this->assertFalse(Cache::has('grading_components.all'));

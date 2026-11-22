@@ -2,6 +2,7 @@
 
 namespace App\Filament\Admin\Pages;
 
+use App\Filament\Admin\AdminNavigationGroup;
 use App\Models\PerformanceLevel;
 use App\Models\PerformanceSummary;
 use BezhanSalleh\FilamentShield\Traits\HasPageShield;
@@ -16,7 +17,9 @@ class AtRiskList extends Page
 
     protected static ?string $navigationLabel = 'At Risk';
 
-    protected static string|\UnitEnum|null $navigationGroup = 'Reports';
+    protected static string|\UnitEnum|null $navigationGroup = AdminNavigationGroup::Reports;
+
+    protected static ?int $navigationSort = 3;
 
     protected static string|\BackedEnum|null $navigationIcon = Heroicon::OutlinedExclamationTriangle;
 

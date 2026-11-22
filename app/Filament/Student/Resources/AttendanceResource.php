@@ -31,12 +31,17 @@ class AttendanceResource extends Resource
 
     public static function table(Table $table): Table
     {
-        return $table->columns([
-            TextColumn::make('date')->date(),
-            TextColumn::make('classSubject.subject.name')->label('Subject'),
-            TextColumn::make('status')->badge(),
-            TextColumn::make('remarks'),
-        ]);
+        return $table
+            ->columns([
+                TextColumn::make('date')->date()->label('Date')->sortable(),
+                TextColumn::make('classSubject.subject.name')->label('Subject')->sortable(),
+                TextColumn::make('status')->badge()->sortable(),
+                TextColumn::make('remarks')->label('Remarks')->default('—'),
+            ])
+            ->defaultSort('date', 'desc')
+            ->emptyStateHeading('No attendance records')
+            ->emptyStateDescription('Your daily attendance records will be logged here.')
+            ->emptyStateIcon('heroicon-o-calendar-days');
     }
 
     public static function getPages(): array

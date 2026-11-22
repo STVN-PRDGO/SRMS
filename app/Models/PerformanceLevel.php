@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -16,6 +17,16 @@ class PerformanceLevel extends Model
     {
         static::saved(fn () => cache()->forget('performance_levels.all'));
         static::deleted(fn () => cache()->forget('performance_levels.all'));
+    }
+
+    /**
+     * @return Collection<int, PerformanceLevel>
+     */
+    public static function allCached(): Collection
+    {
+        $data = cache()->rememberForever('performance_levels.all', fn () => static::query()->orderBy('order')->get()->toArray());
+
+        return static::hydrate($data);
     }
 
     protected function casts(): array

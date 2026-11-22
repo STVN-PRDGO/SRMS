@@ -2,6 +2,7 @@
 
 namespace App\Filament\Admin\Resources;
 
+use App\Filament\Admin\AdminNavigationGroup;
 use App\Filament\Admin\Resources\GradeLevelResource\Pages\ManageGradeLevels;
 use App\Models\GradeLevel;
 use BackedEnum;
@@ -22,15 +23,23 @@ class GradeLevelResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedQueueList;
 
-    protected static string|\UnitEnum|null $navigationGroup = 'Academic Setup';
+    protected static string|\UnitEnum|null $navigationGroup = AdminNavigationGroup::School;
 
     protected static ?int $navigationSort = 3;
 
     public static function form(Schema $schema): Schema
     {
         return $schema->components([
-            TextInput::make('name')->required(),
-            TextInput::make('order')->numeric()->required()->default(0),
+            TextInput::make('name')
+                ->label('Grade Level Name')
+                ->placeholder('e.g. Grade 7, Grade 11')
+                ->required()
+                ->maxLength(255),
+            TextInput::make('order')
+                ->label('Order / Sequence')
+                ->numeric()
+                ->required()
+                ->default(0),
         ]);
     }
 
@@ -38,12 +47,16 @@ class GradeLevelResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('name')->searchable(),
-                TextColumn::make('order')->sortable(),
+                TextColumn::make('order')->label('Order')->sortable(),
+                TextColumn::make('name')->label('Grade Level')->searchable()->sortable(),
+                TextColumn::make('sections_count')->counts('sections')->label('Sections')->sortable(),
             ])
             ->defaultSort('order')
             ->recordActions([EditAction::make(), DeleteAction::make()])
-            ->toolbarActions([BulkActionGroup::make([DeleteBulkAction::make()])]);
+            ->toolbarActions([BulkActionGroup::make([DeleteBulkAction::make()])])
+            ->emptyStateHeading('No grade levels found')
+            ->emptyStateDescription('Define year levels for sections.')
+            ->emptyStateIcon('heroicon-o-queue-list');
     }
 
     public static function getPages(): array

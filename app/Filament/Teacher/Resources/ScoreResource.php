@@ -18,11 +18,13 @@ class ScoreResource extends Resource
 
     protected static bool $isGloballySearchable = false;
 
+    protected static bool $shouldRegisterNavigation = false;
+
     protected static ?string $model = Score::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedPencilSquare;
+    protected static ?string $navigationLabel = 'Score log';
 
-    protected static ?int $navigationSort = 3;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedPencilSquare;
 
     public static function form(Schema $schema): Schema
     {
@@ -33,11 +35,17 @@ class ScoreResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('activity.title')->label('Activity'),
-                TextColumn::make('student.user.name')->label('Student'),
-                TextColumn::make('score'),
-                TextColumn::make('status')->badge(),
-            ]);
+                TextColumn::make('activity.title')->label('Activity')->searchable()->sortable(),
+                TextColumn::make('student.user.name')->label('Student')->searchable()->sortable(),
+                TextColumn::make('score')->label('Earned Score')->sortable(),
+                TextColumn::make('status')->badge()->sortable(),
+                TextColumn::make('remarks')->label('Remarks')->toggleable(isToggledHiddenByDefault: true),
+                TextColumn::make('updated_at')->dateTime()->label('Last Updated')->sortable(),
+            ])
+            ->defaultSort('updated_at', 'desc')
+            ->emptyStateHeading('No scores recorded')
+            ->emptyStateDescription('Scores entered using Enter Scores will appear in this log.')
+            ->emptyStateIcon('heroicon-o-pencil-square');
     }
 
     public static function getPages(): array

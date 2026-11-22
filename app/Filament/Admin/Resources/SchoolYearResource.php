@@ -2,6 +2,7 @@
 
 namespace App\Filament\Admin\Resources;
 
+use App\Filament\Admin\AdminNavigationGroup;
 use App\Filament\Admin\Resources\SchoolYearResource\Pages\ManageSchoolYears;
 use App\Models\SchoolYear;
 use BackedEnum;
@@ -25,17 +26,30 @@ class SchoolYearResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedCalendar;
 
-    protected static string|\UnitEnum|null $navigationGroup = 'Academic Setup';
+    protected static string|\UnitEnum|null $navigationGroup = AdminNavigationGroup::School;
 
     protected static ?int $navigationSort = 1;
 
     public static function form(Schema $schema): Schema
     {
         return $schema->components([
-            TextInput::make('name')->required()->maxLength(255),
-            DatePicker::make('starts_on')->required(),
-            DatePicker::make('ends_on')->required(),
-            Toggle::make('is_current'),
+            TextInput::make('name')
+                ->label('School Year Name')
+                ->placeholder('e.g. 2026-2027')
+                ->required()
+                ->maxLength(255),
+            DatePicker::make('starts_on')
+                ->label('Start Date')
+                ->native(false)
+                ->required(),
+            DatePicker::make('ends_on')
+                ->label('End Date')
+                ->native(false)
+                ->afterOrEqual('starts_on')
+                ->required(),
+            Toggle::make('is_current')
+                ->label('Current Active School Year')
+                ->helperText('Setting this will mark this academic year as active across the system.'),
         ]);
     }
 
@@ -43,13 +57,17 @@ class SchoolYearResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('name')->searchable(),
-                TextColumn::make('starts_on')->date(),
-                TextColumn::make('ends_on')->date(),
-                IconColumn::make('is_current')->boolean(),
+                TextColumn::make('name')->searchable()->sortable(),
+                TextColumn::make('starts_on')->date()->sortable(),
+                TextColumn::make('ends_on')->date()->sortable(),
+                IconColumn::make('is_current')->label('Current')->boolean()->sortable(),
             ])
+            ->defaultSort('starts_on', 'desc')
             ->recordActions([EditAction::make(), DeleteAction::make()])
-            ->toolbarActions([BulkActionGroup::make([DeleteBulkAction::make()])]);
+            ->toolbarActions([BulkActionGroup::make([DeleteBulkAction::make()])])
+            ->emptyStateHeading('No school years')
+            ->emptyStateDescription('Create school years to organize periods and sections.')
+            ->emptyStateIcon('heroicon-o-calendar');
     }
 
     public static function getPages(): array

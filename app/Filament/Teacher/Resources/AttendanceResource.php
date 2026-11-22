@@ -26,7 +26,11 @@ class AttendanceResource extends Resource
 
     protected static bool $isGloballySearchable = false;
 
+    protected static bool $shouldRegisterNavigation = false;
+
     protected static ?string $model = Attendance::class;
+
+    protected static ?string $navigationLabel = 'Attendance';
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedCalendarDays;
 
@@ -36,15 +40,26 @@ class AttendanceResource extends Resource
     {
         return $schema->components([
             Select::make('class_subject_id')
-                ->relationship('classSubject', 'id', fn ($query) => $query->visibleTo(auth()->user()))
+                ->relationship('classSubject', 'id', fn ($query) => $query->visibleTo(auth()->user())->with(['section', 'subject']))
                 ->getOptionLabelFromRecordUsing(fn ($record) => $record->section->name.' · '.$record->subject->name)
                 ->required()
                 ->searchable()
                 ->preload(),
-            Select::make('student_id')->relationship('student.user', 'name')->required()->searchable(),
-            DatePicker::make('date')->required(),
-            Select::make('status')->options(AttendanceStatus::class)->required(),
-            TextInput::make('remarks'),
+            Select::make('student_id')
+                ->relationship('student.user', 'name')
+                ->required()
+                ->searchable(),
+            DatePicker::make('date')
+                ->native(false)
+                ->default(now())
+                ->required(),
+            Select::make('status')
+                ->options(AttendanceStatus::class)
+                ->required()
+                ->default(AttendanceStatus::Present),
+            TextInput::make('remarks')
+                ->placeholder('Optional reason or notes')
+                ->maxLength(255),
         ]);
     }
 
@@ -52,13 +67,19 @@ class AttendanceResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('date')->date(),
-                TextColumn::make('student.user.name')->label('Student'),
-                TextColumn::make('classSubject.subject.name')->label('Subject'),
-                TextColumn::make('status')->badge(),
+                TextColumn::make('date')->date()->sortable(),
+                TextColumn::make('student.user.name')->label('Student')->searchable()->sortable(),
+                TextColumn::make('classSubject.subject.name')->label('Subject')->sortable(),
+                TextColumn::make('classSubject.section.name')->label('Section')->sortable(),
+                TextColumn::make('status')->badge()->sortable(),
+                TextColumn::make('remarks')->label('Remarks')->toggleable(isToggledHiddenByDefault: true),
             ])
+            ->defaultSort('date', 'desc')
             ->recordActions([EditAction::make(), DeleteAction::make()])
-            ->toolbarActions([BulkActionGroup::make([DeleteBulkAction::make()])]);
+            ->toolbarActions([BulkActionGroup::make([DeleteBulkAction::make()])])
+            ->emptyStateHeading('No attendance records')
+            ->emptyStateDescription('Record attendance logs for your classes.')
+            ->emptyStateIcon('heroicon-o-calendar-days');
     }
 
     public static function getPages(): array

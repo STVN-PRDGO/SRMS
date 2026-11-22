@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Actions\Grading\AssertComponentWeights;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -26,6 +27,16 @@ class GradingComponent extends Model
 
         static::saved(fn () => cache()->forget('grading_components.all'));
         static::deleted(fn () => cache()->forget('grading_components.all'));
+    }
+
+    /**
+     * @return Collection<int, GradingComponent>
+     */
+    public static function allCached(): Collection
+    {
+        $data = cache()->rememberForever('grading_components.all', fn () => static::all()->toArray());
+
+        return static::hydrate($data);
     }
 
     protected function casts(): array
